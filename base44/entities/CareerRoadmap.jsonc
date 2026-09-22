@@ -1,0 +1,69 @@
+{
+  "name": "CareerRoadmap",
+  "type": "object",
+  "properties": {
+    "target_role": {
+      "type": "string"
+    },
+    "timeframe": {
+      "type": "string",
+      "enum": [
+        "30 days",
+        "90 days",
+        "6 months",
+        "12 months"
+      ]
+    },
+    "resume_text": {
+      "type": "string"
+    },
+    "current_assessment": {
+      "type": "string"
+    },
+    "skill_gaps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "certifications": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "role_path": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "milestones": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "feasibility_note": {
+      "type": "string"
+    },
+    "date_created": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "target_role"
+  ],
+  "rls": {
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "name": "SearchCriteria",
+  "type": "object",
+  "properties": {
+    "job_titles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "country": {
+      "type": "string"
+    },
+    "state_region": {
+      "type": "string"
+    },
+    "cities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "remote_only": {
+      "type": "boolean",
+      "default": false
+    },
+    "hybrid_ok": {
+      "type": "boolean",
+      "default": true
+    },
+    "min_salary": {
+      "type": "number"
+    },
+    "experience_level": {
+      "type": "string",
+      "enum": [
+        "Internship",
+        "Entry Level",
+        "Mid Level",
+        "Senior",
+        "Lead-Manager"
+      ]
+    },
+    "clearance_level": {
+      "type": "string",
+      "enum": [
+        "None",
+        "Ability to Obtain",
+        "Public Trust",
+        "Secret",
+        "Top Secret",
+        "TS-SCI"
+      ]
+    },
+    "required_skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "exclude_keywords": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "results_per_search": {
+      "type": "number",
+      "default": 25
+    }
+  },
+  "required": [],
+  "rls": {
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "name": "Resume",
+  "type": "object",
+  "properties": {
+    "resume_text": {
+      "type": "string"
+    },
+    "target_role": {
+      "type": "string"
+    },
+    "best_jobs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "transferable_skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "resume_suggestions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "linkedin_suggestions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "overall_score": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "resume_text"
+  ],
+  "rls": {
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "name": "Project",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Home Lab",
+        "Certification Project",
+        "Course Project",
+        "Portfolio Piece",
+        "Work Project",
+        "Other"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Planned",
+        "In Progress",
+        "Completed"
+      ]
+    },
+    "tech_stack": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "skills_demonstrated": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "github_url": {
+      "type": "string"
+    },
+    "live_url": {
+      "type": "string"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "completed_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title"
+  ],
+  "rls": {
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

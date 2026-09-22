@@ -1,0 +1,73 @@
+{
+  "name": "ScrapedJob",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "company": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "salary": {
+      "type": "string"
+    },
+    "description_summary": {
+      "type": "string"
+    },
+    "date_posted": {
+      "type": "string",
+      "format": "date"
+    },
+    "job_url": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "experience_level": {
+      "type": "string",
+      "enum": [
+        "Internship",
+        "Entry Level",
+        "Mid Level",
+        "Senior",
+        "Lead-Manager"
+      ]
+    },
+    "clearance_required": {
+      "type": "string"
+    },
+    "not_interested": {
+      "type": "boolean",
+      "default": false
+    },
+    "saved": {
+      "type": "boolean",
+      "default": false
+    },
+    "relevance_score": {
+      "type": "number"
+    },
+    "batch_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "company"
+  ],
+  "rls": {
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}
