@@ -5,6 +5,8 @@ import {
   isSameWeek,
   startOfWeek,
   subWeeks,
+  parseISO,
+  differenceInCalendarDays,
 } from 'date-fns';
 
 /**
@@ -45,4 +47,40 @@ function computeWeeklyStreak(dates) {
     cursor = subWeeks(cursor, 1);
   }
   return streak;
+}
+
+export function computeBestStreak(logDates, frequency = 'daily') {
+  if (!logDates || logDates.length === 0) return 0;
+  const dates = logDates.map((d) => new Date(d));
+  return frequency === 'weekly' ? bestWeeklyStreak(dates) : bestDailyStreak(dates);
+}
+
+function bestDailyStreak(dates) {
+  const set = [...new Set(dates.map((d) => format(startOfDay(d), 'yyyy-MM-dd')))].sort();
+  let best = 0;
+  let cur = 0;
+  let prev = null;
+  for (const ds of set) {
+    if (prev && differenceInCalendarDays(parseISO(ds), parseISO(prev)) === 1) cur += 1;
+    else cur = 1;
+    best = Math.max(best, cur);
+    prev = ds;
+  }
+  return best;
+}
+
+function bestWeeklyStreak(dates) {
+  const set = [
+    ...new Set(dates.map((d) => format(startOfWeek(d, { weekStartsOn: 1 }), 'yyyy-MM-dd'))),
+  ].sort();
+  let best = 0;
+  let cur = 0;
+  let prev = null;
+  for (const ds of set) {
+    if (prev && differenceInCalendarDays(parseISO(ds), parseISO(prev)) === 7) cur += 1;
+    else cur = 1;
+    best = Math.max(best, cur);
+    prev = ds;
+  }
+  return best;
 }

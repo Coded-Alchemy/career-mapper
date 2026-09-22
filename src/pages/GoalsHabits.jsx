@@ -1,12 +1,22 @@
-import { Target } from 'lucide-react';
-import PagePlaceholder from '@/components/PagePlaceholder';
+import GoalsColumn from '@/components/goals/GoalsColumn';
+import HabitsColumn from '@/components/habits/HabitsColumn';
 
 export default function GoalsHabits() {
   return (
-    <PagePlaceholder
-      title="Goals & Habits"
-      description="Set career goals and build the daily habits that move you toward them, with streaks and progress tracking."
-      icon={Target}
-    />
+    <div className="mx-auto max-w-6xl px-6 py-8">
+      <h1 className="mb-6 text-2xl font-semibold tracking-tight text-foreground">
+        Goals & Habits
+      </h1>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <section className="space-y-3">
+          <h2 className="text-lg font-semibold text-foreground">Goals</h2>
+          <GoalsColumn />
+        </section>
+        <section className="space-y-3">
+          <h2 className="text-lg font-semibold text-foreground">Habits</h2>
+          <HabitsColumn />
+        </section>
+      </div>
+    </div>
   );
 }
