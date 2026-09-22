@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { format, parseISO, isValid } from 'date-fns';
-import { ArrowLeft, Pencil, Save, X, ExternalLink, Trash2 } from 'lucide-react';
+import { ArrowLeft, Pencil, Save, X, ExternalLink, Trash2, MessageSquare } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -123,6 +123,12 @@ export default function ApplicationDetail() {
             </>
           ) : (
             <>
+              {['Phone Screen', 'Interview', 'Final Round'].includes(app.status) && (
+                <Button variant="outline" onClick={() => navigate(`/interview?app=${app.id}`)}>
+                  <MessageSquare className="h-4 w-4" />
+                  Prep for Interview
+                </Button>
+              )}
               <Button variant="outline" onClick={startEdit}>
                 <Pencil className="h-4 w-4" />
                 Edit

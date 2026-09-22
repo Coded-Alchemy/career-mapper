@@ -20,19 +20,55 @@
     "likely_questions": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string"
+          },
+          "answer_focus": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "question",
+          "answer_focus"
+        ]
       }
     },
     "behavioral_questions": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string"
+          },
+          "hint": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "question",
+          "hint"
+        ]
       }
     },
     "technical_questions": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string"
+          },
+          "key_points": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "question",
+          "key_points"
+        ]
       }
     },
     "prep_plan": {
@@ -42,6 +78,12 @@
       }
     },
     "questions_to_ask": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "checked_prep": {
       "type": "array",
       "items": {
         "type": "string"
