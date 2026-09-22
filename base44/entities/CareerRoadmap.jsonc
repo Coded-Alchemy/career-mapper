@@ -23,29 +23,117 @@
     "skill_gaps": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "Critical",
+              "Important",
+              "Nice to Have"
+            ]
+          },
+          "how_to_learn": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "skill",
+          "priority",
+          "how_to_learn"
+        ]
       }
     },
     "certifications": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "why": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "why",
+          "timeline"
+        ]
       }
     },
     "role_path": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "string"
+          },
+          "extract": {
+            "type": "string"
+          },
+          "is_current": {
+            "type": "boolean"
+          },
+          "is_target": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "title",
+          "duration",
+          "extract",
+          "is_current",
+          "is_target"
+        ]
       }
     },
     "milestones": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "phase": {
+            "type": "string"
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "phase",
+          "actions"
+        ]
       }
     },
     "feasibility_note": {
       "type": "string"
+    },
+    "checked_skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "added_milestones": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "date_created": {
       "type": "string",
