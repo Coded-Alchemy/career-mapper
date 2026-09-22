@@ -9,6 +9,7 @@ import FollowUpList from '@/components/jobs/FollowUpList';
 import RecentApplications from '@/components/jobs/RecentApplications';
 import ApplicationForm from '@/components/jobs/ApplicationForm';
 import JobKanban from '@/components/jobs/JobKanban';
+import JobTable from '@/components/jobs/JobTable';
 
 export default function JobTracker() {
   const [applications, setApplications] = useState([]);
@@ -129,12 +130,13 @@ export default function JobTracker() {
         </TabsContent>
 
         <TabsContent value="table">
-          <div className="rounded-xl border border-dashed border-border py-20 text-center">
-            <Table2 className="mx-auto mb-3 h-8 w-8 text-muted-foreground" />
-            <p className="text-sm text-muted-foreground">
-              Table view coming soon.
-            </p>
-          </div>
+          {loading ? (
+            <div className="flex justify-center py-20">
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
+            </div>
+          ) : (
+            <JobTable applications={applications} onCardClick={openEdit} />
+          )}
         </TabsContent>
       </Tabs>
 
