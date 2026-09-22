@@ -8,6 +8,7 @@ import JobStats from '@/components/jobs/JobStats';
 import FollowUpList from '@/components/jobs/FollowUpList';
 import RecentApplications from '@/components/jobs/RecentApplications';
 import ApplicationForm from '@/components/jobs/ApplicationForm';
+import JobKanban from '@/components/jobs/JobKanban';
 
 export default function JobTracker() {
   const [applications, setApplications] = useState([]);
@@ -54,6 +55,11 @@ export default function JobTracker() {
     const updated = await base44.entities.JobApplication.update(app.id, {
       follow_up_date: newDate,
     });
+    setApplications((prev) => prev.map((a) => (a.id === updated.id ? updated : a)));
+  };
+
+  const handleStatusChange = async (app, status) => {
+    const updated = await base44.entities.JobApplication.update(app.id, { status });
     setApplications((prev) => prev.map((a) => (a.id === updated.id ? updated : a)));
   };
 
@@ -109,12 +115,17 @@ export default function JobTracker() {
         </TabsContent>
 
         <TabsContent value="kanban">
-          <div className="rounded-xl border border-dashed border-border py-20 text-center">
-            <Columns3 className="mx-auto mb-3 h-8 w-8 text-muted-foreground" />
-            <p className="text-sm text-muted-foreground">
-              Kanban board coming soon.
-            </p>
-          </div>
+          {loading ? (
+            <div className="flex justify-center py-20">
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
+            </div>
+          ) : (
+            <JobKanban
+              applications={applications}
+              onStatusChange={handleStatusChange}
+              onCardClick={openEdit}
+            />
+          )}
         </TabsContent>
 
         <TabsContent value="table">
