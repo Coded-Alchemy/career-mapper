@@ -68,7 +68,7 @@ export default function ApplicationForm({
         </DialogHeader>
 
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label htmlFor="company">Company</Label>
               <Input
@@ -89,7 +89,7 @@ export default function ApplicationForm({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label>Status</Label>
               <Select value={form.status} onValueChange={(v) => set('status', v)}>
@@ -126,7 +126,7 @@ export default function ApplicationForm({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label htmlFor="salary_range">Salary Range</Label>
               <Input
@@ -167,7 +167,7 @@ export default function ApplicationForm({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label htmlFor="contact_name">Contact Name</Label>
               <Input

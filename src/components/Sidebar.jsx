@@ -21,9 +21,9 @@ const NAV_ITEMS = [
   { label: 'AI Job Scraper', to: '/scraper', icon: Search },
 ];
 
-export default function Sidebar() {
+export function SidebarContent({ onNavigate }) {
   return (
-    <aside className="flex h-full w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar-background">
+    <div className="flex h-full flex-col bg-sidebar-background">
       <div className="px-4 py-5">
         <Logo />
       </div>
@@ -34,6 +34,7 @@ export default function Sidebar() {
             key={to}
             to={to}
             end={to === '/'}
+            onClick={onNavigate}
             className={({ isActive }) =>
               [
                 'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
@@ -52,6 +53,14 @@ export default function Sidebar() {
       <div className="border-t border-sidebar-border px-3 py-3">
         <ThemeToggle />
       </div>
+    </div>
+  );
+}
+
+export default function Sidebar() {
+  return (
+    <aside className="hidden w-64 shrink-0 border-r border-sidebar-border md:block">
+      <SidebarContent />
     </aside>
   );
 }

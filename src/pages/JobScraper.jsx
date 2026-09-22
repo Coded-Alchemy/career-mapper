@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { Check, Loader2, Settings as SettingsIcon, ListChecks, Search } from 'lucide-react';
+import { Check, Loader2, Settings as SettingsIcon, ListChecks } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import ScraperSettings from '@/components/scraper/ScraperSettings';
 import ScraperSummary from '@/components/scraper/ScraperSummary';
+import ScraperResults from '@/components/scraper/ScraperResults';
 
 const ALL_SOURCES = [
   'ClearanceJobs', 'LinkedIn Jobs', 'Indeed', 'USAJobs', 'Dice',
@@ -119,13 +120,7 @@ export default function JobScraper() {
         </TabsContent>
 
         <TabsContent value="results">
-          <div className="rounded-xl border border-dashed border-border py-16 text-center">
-            <Search className="mx-auto mb-3 h-8 w-8 text-muted-foreground" />
-            <h3 className="text-lg font-semibold text-foreground">Results</h3>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Scraped job results will appear here.
-            </p>
-          </div>
+          <ScraperResults />
         </TabsContent>
       </Tabs>
     </div>

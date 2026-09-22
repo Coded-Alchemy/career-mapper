@@ -91,7 +91,7 @@ export default function ProjectModal({ open, project, onClose, onSave, onDelete 
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label>Category</Label>
               <Select value={form.category} onValueChange={(v) => set('category', v)}>
@@ -142,7 +142,7 @@ export default function ProjectModal({ open, project, onClose, onSave, onDelete 
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label htmlFor="github_url">GitHub URL</Label>
               <Input
@@ -163,7 +163,7 @@ export default function ProjectModal({ open, project, onClose, onSave, onDelete 
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label htmlFor="start_date">Start Date</Label>
               <Input
