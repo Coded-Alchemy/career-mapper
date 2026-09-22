@@ -19,6 +19,7 @@ import GoalsHabits from '@/pages/GoalsHabits';
 import ResumeReviewer from '@/pages/ResumeReviewer';
 import InterviewPrep from '@/pages/InterviewPrep';
 import JobScraper from '@/pages/JobScraper';
+import ApplicationDetail from '@/pages/ApplicationDetail';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -60,6 +61,7 @@ const AuthenticatedApp = () => {
           <Route path="/resume" element={<ResumeReviewer />} />
           <Route path="/interview" element={<InterviewPrep />} />
           <Route path="/scraper" element={<JobScraper />} />
+          <Route path="/applications/:id" element={<ApplicationDetail />} />
         </Route>
       </Route>
       <Route path="*" element={<PageNotFound />} />

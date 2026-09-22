@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { addDays, format } from 'date-fns';
 import { Plus, LayoutDashboard, Columns3, Table2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
@@ -16,6 +17,7 @@ export default function JobTracker() {
   const [loading, setLoading] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     base44.entities.JobApplication.list('-created_date', 500).then((data) => {
@@ -30,8 +32,7 @@ export default function JobTracker() {
   };
 
   const openEdit = (app) => {
-    setEditing(app);
-    setFormOpen(true);
+    navigate(`/applications/${app.id}`);
   };
 
   const handleSave = async (data) => {
