@@ -2,6 +2,7 @@ import { MapPin, ExternalLink, Calendar, Bookmark, Ban } from 'lucide-react';
 import { parseISO, isValid, differenceInCalendarDays, format } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { buildSourceSearchUrl } from '@/lib/sourceSearchUrls';
 
 function relDays(d) {
   if (!d) return null;
@@ -21,7 +22,7 @@ function normalizeUrl(url) {
 }
 
 export default function ScrapedJobCard({ job, onSaveToTracker, onNotInterested }) {
-  const url = normalizeUrl(job.job_url);
+  const viewUrl = buildSourceSearchUrl(job);
   const score = job.relevance_score;
   const posted = relDays(job.date_posted);
 
@@ -94,16 +95,14 @@ export default function ScrapedJobCard({ job, onSaveToTracker, onNotInterested }
           <Ban className="h-3.5 w-3.5" />
           Not Interested
         </Button>
-        {url && (
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ml-auto inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
-          >
-            View Posting <ExternalLink className="h-3 w-3" />
-          </a>
-        )}
+        <a
+          href={viewUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-auto inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+        >
+          View Posting <ExternalLink className="h-3 w-3" />
+        </a>
       </div>
     </div>
   );
