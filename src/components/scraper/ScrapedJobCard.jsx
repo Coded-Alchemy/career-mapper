@@ -22,7 +22,8 @@ function normalizeUrl(url) {
 }
 
 export default function ScrapedJobCard({ job, onSaveToTracker, onNotInterested }) {
-  const viewUrl = buildSourceSearchUrl(job);
+  const directUrl = job.job_url && /^https?:\/\/[\w.-]+\.[a-z]{2,}/i.test(job.job_url) ? job.job_url : null;
+  const viewUrl = directUrl || buildSourceSearchUrl(job);
   const score = job.relevance_score;
   const posted = relDays(job.date_posted);
 

@@ -19,6 +19,11 @@ function key(t, comp) {
   return String(t || '').toLowerCase().trim() + '|' + String(comp || '').toLowerCase().trim();
 }
 
+function validUrl(url) {
+  if (!url) return false;
+  return /^https?:\/\/[\w.-]+\.[a-z]{2,}/i.test(url);
+}
+
 export default async function (req) {
   try {
     const base44 = createClientFromRequest(req);
@@ -83,7 +88,9 @@ FRESHNESS IS A HARD RULE, not a preference:
 4. Prefer postings from the last 14 days when available.
 5. Before returning, re-check every result's date_posted against today's date and drop any violation.
 
-Return AT LEAST ${minResults} real, currently-open postings — never fewer than 15. Each must be a REAL, LIVE posting with a working job_url on the source site. Do not invent or fabricate postings.
+Return AT LEAST ${minResults} real, currently-open postings — never fewer than 15. Each must be a REAL, LIVE posting. Do not invent or fabricate postings.
+
+URL INTEGRITY (CRITICAL): For job_url, copy the EXACT, verbatim URL of the live posting directly from your web search results. NEVER fabricate, guess, reconstruct, or shorten URLs. A fabricated URL is worse than no URL — if the real direct URL for a posting is not visible in your search results, set job_url to an empty string "" and do NOT invent one.
 
 For each posting return:
 - title: job title
@@ -92,7 +99,7 @@ For each posting return:
 - salary: salary range or figure exactly as posted (or "Not listed")
 - description_summary: EXACTLY 2 sentences summarizing the role
 - date_posted: YYYY-MM-DD
-- job_url: a working URL to the live posting on the source site
+- job_url: the EXACT verbatim URL copied from the search result for this posting, or "" if no real URL is available
 - source: the source site name (one of: ${sources.join(', ')})
 - experience_level: one of Internship, Entry Level, Mid Level, Senior, Lead/Manager
 - clearance_required: the clearance level required (or "None")
@@ -184,7 +191,7 @@ For each posting return:
       salary: j.salary || '',
       description_summary: j.description_summary || '',
       date_posted: j.date_posted,
-      job_url: j.job_url || '',
+      job_url: validUrl(j.job_url) ? j.job_url : '',
       source: j.source || '',
       experience_level: normExp(j.experience_level, c.experience_level),
       clearance_required: j.clearance_required || '',
