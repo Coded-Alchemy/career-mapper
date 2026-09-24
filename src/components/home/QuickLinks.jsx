@@ -36,12 +36,12 @@ const LINKS = [
 
 export default function QuickLinks() {
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-      {LINKS.map(({ label, to, icon: Icon, description }) => (
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      {LINKS.map(({ label, to, icon: Icon, description }, i) => (
         <Link
           key={to}
           to={to}
-          className="group flex items-start gap-3 rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary/50"
+          className={`group flex items-start gap-3 rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary/50 ${i === LINKS.length - 1 ? 'sm:col-span-2' : ''}`}
         >
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <Icon className="h-5 w-5" />
