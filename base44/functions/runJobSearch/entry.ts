@@ -197,7 +197,7 @@ For each posting return:
       clearance_required: j.clearance_required || '',
       relevance_score: typeof j.relevance_score === 'number' ? j.relevance_score : null,
       not_interested: false,
-      saved: true,
+      saved: false,
       batch_id,
     }));
 
