@@ -5,7 +5,7 @@ export default function Logo() {
         <span className="font-mono text-xl font-semibold leading-none">⌘</span>
       </div>
       <span className="text-[15px] font-semibold tracking-tight text-foreground">
-        AI TechCareer OS
+        Career Mapper
       </span>
     </div>
   );
