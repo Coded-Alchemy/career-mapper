@@ -2,6 +2,9 @@
   "name": "SearchCriteria",
   "type": "object",
   "properties": {
+    "name": {
+      "type": "string"
+    },
     "job_titles": {
       "type": "array",
       "items": {

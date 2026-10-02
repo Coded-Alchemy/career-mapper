@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Check, Loader2, Settings as SettingsIcon, ListChecks } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import SavedSearches from '@/components/scraper/SavedSearches';
 import ScraperSettings from '@/components/scraper/ScraperSettings';
 import ScraperSummary from '@/components/scraper/ScraperSummary';
 import ScraperResults from '@/components/scraper/ScraperResults';
@@ -27,19 +28,26 @@ const DEFAULTS = {
   results_per_search: 25,
 };
 
+const toCriteria = (record) => {
+  const { created_date, updated_date, created_by_id, ...rest } = record;
+  return { ...DEFAULTS, ...rest };
+};
+
 export default function JobScraper() {
+  const [searches, setSearches] = useState(null);
   const [criteria, setCriteria] = useState(null);
   const [saveState, setSaveState] = useState('idle');
   const skipSave = useRef(true);
-  const recordId = useRef(null);
 
   useEffect(() => {
-    base44.entities.SearchCriteria.list('-created_date', 1).then((data) => {
+    base44.entities.SearchCriteria.list('-updated_date').then(async (data) => {
       if (data.length) {
-        recordId.current = data[0].id;
-        setCriteria({ ...DEFAULTS, ...data[0] });
+        setSearches(data);
+        setCriteria(toCriteria(data[0]));
       } else {
-        setCriteria({ ...DEFAULTS });
+        const created = await base44.entities.SearchCriteria.create({ ...DEFAULTS, name: 'My Search' });
+        setSearches([created]);
+        setCriteria(toCriteria(created));
       }
     });
   }, []);
@@ -52,23 +60,59 @@ export default function JobScraper() {
     }
     setSaveState('saving');
     const t = setTimeout(async () => {
-      const { id, created_date, updated_date, created_by_id, ...payload } = criteria;
-      try {
-        if (recordId.current) {
-          await base44.entities.SearchCriteria.update(recordId.current, payload);
-        } else {
-          const created = await base44.entities.SearchCriteria.create(payload);
-          recordId.current = created.id;
-        }
-        setSaveState('saved');
-      } catch {
-        setSaveState('idle');
-      }
+      const { id, ...payload } = criteria;
+      await base44.entities.SearchCriteria.update(id, payload);
+      setSearches((prev) => prev.map((s) => (s.id === id ? { ...s, ...payload } : s)));
+      setSaveState('saved');
     }, 600);
     return () => clearTimeout(t);
   }, [criteria]);
 
+  const loadSearch = (record) => {
+    skipSave.current = true;
+    setCriteria(toCriteria(record));
+    setSaveState('idle');
+  };
+
   const onChange = (patch) => setCriteria((prev) => ({ ...prev, ...patch }));
+
+  const selectSearch = (id) => {
+    if (id === criteria?.id) return;
+    const record = (searches || []).find((s) => s.id === id);
+    if (record) loadSearch(record);
+  };
+
+  const createSearch = async (name) => {
+    const created = await base44.entities.SearchCriteria.create({ ...DEFAULTS, name });
+    setSearches((prev) => [created, ...(prev || [])]);
+    loadSearch(created);
+  };
+
+  const renameSearch = async (name) => {
+    const id = criteria.id;
+    await base44.entities.SearchCriteria.update(id, { name });
+    setSearches((prev) => prev.map((s) => (s.id === id ? { ...s, name } : s)));
+    skipSave.current = true;
+    setCriteria((prev) => ({ ...prev, name }));
+  };
+
+  const deleteSearch = async (id) => {
+    await base44.entities.SearchCriteria.delete(id);
+    const remaining = (searches || []).filter((s) => s.id !== id);
+
+    if (criteria?.id !== id) {
+      setSearches(remaining);
+      return;
+    }
+    if (remaining.length) {
+      setSearches(remaining);
+      loadSearch(remaining[0]);
+    } else {
+      const created = await base44.entities.SearchCriteria.create({ ...DEFAULTS, name: 'My Search' });
+      setSearches([created]);
+      loadSearch(created);
+    }
+  };
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-8">
@@ -90,6 +134,19 @@ export default function JobScraper() {
           </span>
         )}
       </header>
+
+      {criteria && searches && (
+        <div className="mb-4">
+          <SavedSearches
+            searches={searches}
+            activeId={criteria.id}
+            onSelect={selectSearch}
+            onCreate={createSearch}
+            onRename={renameSearch}
+            onDelete={deleteSearch}
+          />
+        </div>
+      )}
 
       {criteria && (
         <div className="mb-6">
