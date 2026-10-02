@@ -92,16 +92,11 @@ Match EVERY one of these criteria:
 
 ${clearanceClause}
 
-FRESHNESS IS A HARD RULE, not a preference:
-1. First compute today's date (${todayStr}).
-2. ONLY return postings whose date_posted falls within the last 90 days (on or after ${cutoffStr}).
-3. A posting from an earlier year, or one whose date cannot be confirmed as within the last 90 days, MUST be discarded and replaced with a fresh one — NEVER pad results with stale postings.
-4. Prefer postings from the last 14 days when available.
-5. Before returning, re-check every result's date_posted against today's date and drop any violation.
+FRESHNESS: only include postings dated on or after ${cutoffStr} (within the last 90 days). Prefer the most recently posted roles, and never pad the list with stale postings.
+
+URLS: copy each job_url verbatim from your search results. Never construct, shorten or guess a URL — if the real URL is not visible, use "" instead.
 
 Return AT LEAST ${minResults} real, currently-open postings — never fewer than 15. Each must be a REAL, LIVE posting, and no two may be the same role at the same company. Favour the most recently posted roles. Do not invent or fabricate postings.
-
-URL INTEGRITY (CRITICAL): For job_url, copy the EXACT, verbatim URL of the live posting directly from your web search results. NEVER fabricate, guess, reconstruct, or shorten URLs. A fabricated URL is worse than no URL — if the real direct URL for a posting is not visible in your search results, set job_url to an empty string "" and do NOT invent one.
 
 For each posting return:
 - title: job title
