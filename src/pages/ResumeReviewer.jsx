@@ -42,8 +42,8 @@ export default function ResumeReviewer() {
 
   const onFile = async (file) => {
     setError('');
-    const { file_url } = await base44.integrations.Core.UploadPublicFile({ file });
-    const res = await base44.functions.invoke('extractResumeText', { file_url });
+    const { file_uri } = await base44.integrations.Core.UploadPrivateFile({ file });
+    const res = await base44.functions.invoke('extractResumeText', { file_uri });
     if (res.data?.error) throw new Error(res.data.error);
     if (res.data?.text) setResumeText(res.data.text);
   };
