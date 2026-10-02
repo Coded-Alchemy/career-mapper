@@ -99,7 +99,7 @@ FRESHNESS IS A HARD RULE, not a preference:
 4. Prefer postings from the last 14 days when available.
 5. Before returning, re-check every result's date_posted against today's date and drop any violation.
 
-Return up to ${minResults} real, currently-open postings — as many as you can genuinely verify from your search results. Favour the most recently posted roles. NEVER invent postings or pad the list with near-duplicates.
+Return AT LEAST ${minResults} real, currently-open postings — never fewer than 15. Each must be a REAL, LIVE posting, and no two may be the same role at the same company. Favour the most recently posted roles. Do not invent or fabricate postings.
 
 URL INTEGRITY (CRITICAL): For job_url, copy the EXACT, verbatim URL of the live posting directly from your web search results. NEVER fabricate, guess, reconstruct, or shorten URLs. A fabricated URL is worse than no URL — if the real direct URL for a posting is not visible in your search results, set job_url to an empty string "" and do NOT invent one.
 
