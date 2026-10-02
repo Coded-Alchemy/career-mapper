@@ -56,7 +56,7 @@ export default function RoadmapForm({
         </div>
         <Textarea
           rows={8}
-          placeholder="Paste your resume text here, or upload a PDF below"
+          placeholder="Paste your resume text here, or upload a PDF, Word or text file below"
           value={resumeText}
           onChange={(e) => setResumeText(e.target.value)}
         />
@@ -66,8 +66,8 @@ export default function RoadmapForm({
           ) : (
             <Upload className="h-4 w-4" />
           )}
-          {extracting ? 'Extracting…' : 'Upload PDF'}
-          <input type="file" accept="application/pdf" className="hidden" onChange={handleFile} />
+          {extracting ? 'Extracting…' : 'Upload resume file'}
+          <input type="file" accept=".pdf,.docx,.txt,.md" className="hidden" onChange={handleFile} />
         </label>
       </div>
 
