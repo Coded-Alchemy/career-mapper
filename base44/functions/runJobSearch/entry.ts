@@ -46,6 +46,17 @@ export default async function (req) {
     const excludeKeywords = c.exclude_keywords || [];
     const minResults = Math.max(c.results_per_search || 25, 15);
 
+    // Postings the user dismissed or already has in the Job Tracker must not come
+    // back. Everything else stays eligible, so repeat searches still fill the list.
+    const [existingScraped, existingApps] = await Promise.all([
+      base44.entities.ScrapedJob.list('-created_date', 500),
+      base44.entities.JobApplication.list('-created_date', 500),
+    ]);
+    const dismissedKeys = new Set(
+      existingScraped.filter((s) => s.not_interested).map((s) => key(s.title, s.company))
+    );
+    const trackedKeys = new Set(existingApps.map((a) => key(a.title, a.company)));
+
     const today = new Date();
     const todayStr = today.toISOString().slice(0, 10);
     const cutoff = new Date(today);
@@ -88,7 +99,7 @@ FRESHNESS IS A HARD RULE, not a preference:
 4. Prefer postings from the last 14 days when available.
 5. Before returning, re-check every result's date_posted against today's date and drop any violation.
 
-Return AT LEAST ${minResults} real, currently-open postings — never fewer than 15. Each must be a REAL, LIVE posting. Do not invent or fabricate postings.
+Return up to ${minResults} real, currently-open postings — as many as you can genuinely verify from your search results. Favour the most recently posted roles. NEVER invent postings or pad the list with near-duplicates.
 
 URL INTEGRITY (CRITICAL): For job_url, copy the EXACT, verbatim URL of the live posting directly from your web search results. NEVER fabricate, guess, reconstruct, or shorten URLs. A fabricated URL is worse than no URL — if the real direct URL for a posting is not visible in your search results, set job_url to an empty string "" and do NOT invent one.
 
@@ -163,23 +174,17 @@ For each posting return:
       return true;
     });
 
-    // Dedup against existing ScrapedJobs and JobApplications
-    const [existingScraped, existingApps] = await Promise.all([
-      base44.entities.ScrapedJob.list('-created_date', 500),
-      base44.entities.JobApplication.list('-created_date', 500),
-    ]);
-    const existingKeys = new Set([
-      ...existingScraped.map((s) => key(s.title, s.company)),
-      ...existingApps.map((a) => key(a.title, a.company)),
-    ]);
-    const fresh = jobs.filter((j) => !existingKeys.has(key(j.title, j.company)));
+    const fresh = jobs.filter((j) => {
+      const k = key(j.title, j.company);
+      return !dismissedKeys.has(k) && !trackedKeys.has(k);
+    });
 
     if (!fresh.length) {
       return Response.json({
         batch_id: null,
         created_at: new Date().toISOString(),
         jobs: [],
-        message: 'No new postings found — all results were already scraped or in your Job Tracker.',
+        message: 'No postings found for your current criteria — try widening your search in Settings.',
       });
     }
 
