@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
@@ -23,27 +22,30 @@ export default function SearchNameDialog({
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="jb-dialog jb-dialog sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
 
-        <div className="space-y-1.5">
-          <Label htmlFor="search-name">Search name</Label>
+        <div className="jb-field">
+          <Label htmlFor="search-name" className="jb-label">Search name</Label>
           <Input
             id="search-name"
             value={name}
             autoFocus
             placeholder="e.g. Boston Help Desk"
+            className="jb-input jb-control"
             onChange={(e) => setName(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && submit()}
           />
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={submit} disabled={!name.trim()}>{confirmLabel}</Button>
+          <button type="button" className="jb-btn" onClick={onClose}>Cancel</button>
+          <button type="button" className="jb-btn jb-btn-primary" onClick={submit} disabled={!name.trim()}>
+            {confirmLabel}
+          </button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -1,10 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { format, parseISO, isValid } from 'date-fns';
-import { Search, Loader2, SlidersHorizontal } from 'lucide-react';
+import { Search, Loader2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select';
@@ -23,6 +20,8 @@ const SOURCES = [
   'ClearanceJobs', 'LinkedIn Jobs', 'Indeed', 'USAJobs', 'Dice',
   'ZipRecruiter', 'Glassdoor', 'Wellfound', 'Google Jobs',
 ];
+
+const SELECT_CLASS = 'jb-select jb-control';
 
 function salaryValue(s) {
   if (!s) return 0;
@@ -148,24 +147,24 @@ export default function ScraperResults() {
   }, [jobs]);
 
   return (
-    <div className="space-y-5">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <Button onClick={runSearch} disabled={loading} className="sm:w-auto">
+    <div>
+      <div className="jb-resultshead">
+        <button type="button" className="jb-btn jb-btn-primary" onClick={runSearch} disabled={loading}>
           {loading ? (
             <>
-              <Loader2 className="h-4 w-4 animate-spin" />
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
               Searching…
             </>
           ) : (
             <>
-              <Search className="h-4 w-4" />
+              <Search className="h-3.5 w-3.5" />
               Run Search
             </>
           )}
-        </Button>
+        </button>
         {batch && (
-          <div className="rounded-lg border border-border bg-muted/30 px-3 py-2 text-xs text-muted-foreground">
-            <span className="font-medium text-foreground">{batch.count}</span> results
+          <div className="jb-count">
+            <strong>{batch.count}</strong> results
             {batch.created_at && (
               <span> · {format(parseISO(batch.created_at), 'MMM d, yyyy h:mm a')}</span>
             )}
@@ -174,63 +173,64 @@ export default function ScraperResults() {
       </div>
 
       {loading && (
-        <div className="flex items-center gap-3 rounded-xl border border-border bg-card p-4">
-          <Loader2 className="h-5 w-5 animate-spin text-primary" />
-          <span className="text-sm text-muted-foreground">{progressMsg}</span>
+        <div className="jb-notice">
+          <Loader2 className="jb-notice-icon h-4 w-4 animate-spin" />
+          <span>{progressMsg}</span>
         </div>
       )}
 
-      {error && (
-        <div className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-          {error}
-        </div>
-      )}
-      {info && !error && (
-        <div className="rounded-xl border border-warning/40 bg-warning/10 px-4 py-3 text-sm text-warning">
-          {info}
-        </div>
-      )}
+      {error && <div className="jb-notice jb-notice-error">{error}</div>}
+      {info && !error && <div className="jb-notice jb-notice-warn">{info}</div>}
 
       {!loading && jobs.length > 0 && (
         <>
-          <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card p-3">
-            <SlidersHorizontal className="h-4 w-4 text-muted-foreground" />
+          <div className="jb-filters">
             <Select value={sort} onValueChange={setSort}>
-              <SelectTrigger className="w-[150px]">
+              <SelectTrigger className={SELECT_CLASS}>
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="date">Newest first</SelectItem>
-                <SelectItem value="relevance">Relevance</SelectItem>
-                <SelectItem value="salary">Salary (high to low)</SelectItem>
+              <SelectContent className="jb-popover">
+                <SelectItem value="date" className="jb-item">Newest first</SelectItem>
+                <SelectItem value="relevance" className="jb-item">Relevance</SelectItem>
+                <SelectItem value="salary" className="jb-item">Salary (high to low)</SelectItem>
               </SelectContent>
             </Select>
+
             <Select value={sourceFilter} onValueChange={setSourceFilter}>
-              <SelectTrigger className="w-[160px]">
+              <SelectTrigger className={SELECT_CLASS}>
                 <SelectValue placeholder="Source" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All sources</SelectItem>
+              <SelectContent className="jb-popover">
+                <SelectItem value="all" className="jb-item">All sources</SelectItem>
                 {availableSources.map((s) => (
-                  <SelectItem key={s} value={s}>{s}</SelectItem>
+                  <SelectItem key={s} value={s} className="jb-item">{s}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            <div className="flex items-center gap-2">
-              <Switch checked={savedOnly} onCheckedChange={setSavedOnly} id="saved-only" />
-              <Label htmlFor="saved-only" className="cursor-pointer text-sm">Saved only</Label>
-            </div>
-            <div className="flex items-center gap-2">
-              <Switch checked={hideNotInterested} onCheckedChange={setHideNotInterested} id="hide-ni" />
-              <Label htmlFor="hide-ni" className="cursor-pointer text-sm">Hide not interested</Label>
-            </div>
+
+            <label className="jb-checklabel">
+              <input
+                type="checkbox"
+                className="jb-check"
+                checked={savedOnly}
+                onChange={(e) => setSavedOnly(e.target.checked)}
+              />
+              Saved only
+            </label>
+            <label className="jb-checklabel">
+              <input
+                type="checkbox"
+                className="jb-check"
+                checked={hideNotInterested}
+                onChange={(e) => setHideNotInterested(e.target.checked)}
+              />
+              Hide not interested
+            </label>
           </div>
 
-          <div className="space-y-3">
+          <div className="jb-cards">
             {visibleJobs.length === 0 ? (
-              <p className="rounded-xl border border-dashed border-border py-10 text-center text-sm text-muted-foreground">
-                No results match your filters.
-              </p>
+              <p className="jb-empty">No results match your filters.</p>
             ) : (
               visibleJobs.map((job) => (
                 <ScrapedJobCard
@@ -246,11 +246,11 @@ export default function ScraperResults() {
       )}
 
       {!loading && jobs.length === 0 && !error && (
-        <div className="rounded-xl border border-dashed border-border py-16 text-center">
-          <Search className="mx-auto mb-3 h-8 w-8 text-muted-foreground" />
-          <h3 className="text-lg font-semibold text-foreground">No results yet</h3>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Press <span className="font-medium text-foreground">Run Search</span> to find fresh job postings matching your criteria.
+        <div className="jb-empty">
+          <Search className="jb-empty-icon h-6 w-6" />
+          <strong>No results yet</strong>
+          <p>
+            Press <span className="jb-empty-em">Run Search</span> to find fresh job postings matching your criteria.
           </p>
         </div>
       )}

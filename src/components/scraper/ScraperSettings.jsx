@@ -1,8 +1,6 @@
 import TagInput from '@/components/projects/TagInput';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select';
@@ -24,12 +22,29 @@ const EXPERIENCE = [
 const CLEARANCE = ['None', 'Ability to Obtain', 'Public Trust', 'Secret', 'Top Secret', 'TS-SCI'];
 const RESULTS = [10, 25, 50];
 
+const SELECT_CLASS = 'jb-select jb-control';
+
 function Field({ label, children }) {
   return (
-    <div className="space-y-1.5">
-      <Label>{label}</Label>
+    <div className="jb-field">
+      <Label className="jb-label">{label}</Label>
       {children}
     </div>
+  );
+}
+
+function TagField({ label, value, onChange, placeholder }) {
+  return (
+    <Field label={label}>
+      <TagInput
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        className="jb-tagbox jb-control"
+        chipClassName="jb-chip"
+        inputClassName="jb-taginput"
+      />
+    </Field>
   );
 }
 
@@ -43,39 +58,39 @@ export default function ScraperSettings({ criteria, onChange }) {
   };
 
   return (
-    <div className="space-y-6 rounded-xl border border-border bg-card p-5">
-      <Field label="Job Titles">
-        <TagInput
-          value={criteria.job_titles || []}
-          onChange={(v) => onChange({ job_titles: v })}
-          placeholder='e.g. "Help Desk Technician", "SOC Analyst"'
-        />
-      </Field>
+    <div className="jb-form">
+      <TagField
+        label="Job Titles"
+        value={criteria.job_titles || []}
+        onChange={(v) => onChange({ job_titles: v })}
+        placeholder='e.g. "Help Desk Technician", "SOC Analyst"'
+      />
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="jb-fieldrow">
         <Field label="Country">
           <Select
             value={criteria.country || 'United States'}
             onValueChange={(v) => onChange({ country: v, state_region: '' })}
           >
-            <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>
+            <SelectTrigger className={SELECT_CLASS}><SelectValue /></SelectTrigger>
+            <SelectContent className="jb-popover">
               {COUNTRIES.map((c) => (
-                <SelectItem key={c} value={c}>{c}</SelectItem>
+                <SelectItem key={c} value={c} className="jb-item">{c}</SelectItem>
               ))}
             </SelectContent>
           </Select>
         </Field>
+
         <Field label="State / Region">
           {stateList ? (
             <Select
               value={criteria.state_region || ''}
               onValueChange={(v) => onChange({ state_region: v })}
             >
-              <SelectTrigger><SelectValue placeholder="Select state" /></SelectTrigger>
-              <SelectContent>
+              <SelectTrigger className={SELECT_CLASS}><SelectValue placeholder="Select state" /></SelectTrigger>
+              <SelectContent className="jb-popover">
                 {stateList.map((s) => (
-                  <SelectItem key={s} value={s}>{s}</SelectItem>
+                  <SelectItem key={s} value={s} className="jb-item">{s}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -84,113 +99,124 @@ export default function ScraperSettings({ criteria, onChange }) {
               value={criteria.state_region || ''}
               onChange={(e) => onChange({ state_region: e.target.value })}
               placeholder="State / Region"
+              className="jb-input jb-control"
             />
           )}
         </Field>
       </div>
 
-      <Field label="Cities (optional)">
-        <TagInput
-          value={criteria.cities || []}
-          onChange={(v) => onChange({ cities: v })}
-          placeholder="Add a city and press Enter"
-        />
-      </Field>
+      <TagField
+        label="Cities (optional)"
+        value={criteria.cities || []}
+        onChange={(v) => onChange({ cities: v })}
+        placeholder="Add a city and press Enter"
+      />
 
-      <div className="flex flex-wrap gap-6">
-        <div className="flex items-center gap-2.5">
-          <Switch checked={!!criteria.remote_only} onCheckedChange={(v) => onChange({ remote_only: v })} />
-          <Label className="font-normal cursor-pointer">Remote only</Label>
-        </div>
-        <div className="flex items-center gap-2.5">
-          <Switch checked={!!criteria.hybrid_ok} onCheckedChange={(v) => onChange({ hybrid_ok: v })} />
-          <Label className="font-normal cursor-pointer">Open to hybrid</Label>
-        </div>
+      <div className="jb-toggleline">
+        <label className="jb-checklabel">
+          <input
+            type="checkbox"
+            className="jb-check"
+            checked={!!criteria.remote_only}
+            onChange={(e) => onChange({ remote_only: e.target.checked })}
+          />
+          Remote only
+        </label>
+        <label className="jb-checklabel">
+          <input
+            type="checkbox"
+            className="jb-check"
+            checked={!!criteria.hybrid_ok}
+            onChange={(e) => onChange({ hybrid_ok: e.target.checked })}
+          />
+          Open to hybrid
+        </label>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="jb-triple">
         <Field label="Minimum Salary">
-          <div className="relative">
-            <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+          <div className="jb-money">
+            <span>$</span>
             <Input
               type="number"
               min="0"
               step="1000"
-              className="pl-7"
               value={criteria.min_salary ?? ''}
               onChange={(e) => onChange({ min_salary: e.target.value ? Number(e.target.value) : null })}
               placeholder="55,000"
+              className="jb-input jb-control"
             />
           </div>
         </Field>
+
         <Field label="Experience Level">
           <Select
             value={criteria.experience_level || 'Entry Level'}
             onValueChange={(v) => onChange({ experience_level: v })}
           >
-            <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>
+            <SelectTrigger className={SELECT_CLASS}><SelectValue /></SelectTrigger>
+            <SelectContent className="jb-popover">
               {EXPERIENCE.map((o) => (
-                <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
+                <SelectItem key={o.value} value={o.value} className="jb-item">{o.label}</SelectItem>
               ))}
             </SelectContent>
           </Select>
         </Field>
+
         <Field label="Clearance Level">
           <Select
             value={criteria.clearance_level || 'None'}
             onValueChange={(v) => onChange({ clearance_level: v })}
           >
-            <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>
+            <SelectTrigger className={SELECT_CLASS}><SelectValue /></SelectTrigger>
+            <SelectContent className="jb-popover">
               {CLEARANCE.map((c) => (
-                <SelectItem key={c} value={c}>{c}</SelectItem>
+                <SelectItem key={c} value={c} className="jb-item">{c}</SelectItem>
               ))}
             </SelectContent>
           </Select>
         </Field>
       </div>
 
-      <Field label="Required Skills">
-        <TagInput
-          value={criteria.required_skills || []}
-          onChange={(v) => onChange({ required_skills: v })}
-          placeholder="e.g. Splunk, Python, Active Directory"
-        />
-      </Field>
+      <TagField
+        label="Required Skills"
+        value={criteria.required_skills || []}
+        onChange={(v) => onChange({ required_skills: v })}
+        placeholder="e.g. Splunk, Python, Active Directory"
+      />
 
-      <Field label="Exclude Keywords">
-        <TagInput
-          value={criteria.exclude_keywords || []}
-          onChange={(v) => onChange({ exclude_keywords: v })}
-          placeholder="e.g. senior, manager, 5+ years"
-        />
-      </Field>
+      <TagField
+        label="Exclude Keywords"
+        value={criteria.exclude_keywords || []}
+        onChange={(v) => onChange({ exclude_keywords: v })}
+        placeholder="e.g. senior, manager, 5+ years"
+      />
 
-      <div className="space-y-2">
-        <Label>Sources to Search</Label>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-          {SOURCES.map((src) => {
-            const checked = (criteria.sources || []).includes(src);
-            return (
-              <div key={src} className="flex items-center gap-2.5 rounded-lg border border-border bg-background/40 px-3 py-2">
-                <Checkbox checked={checked} onCheckedChange={() => toggleSource(src)} id={`src-${src}`} />
-                <label htmlFor={`src-${src}`} className="cursor-pointer text-sm text-foreground">{src}</label>
-              </div>
-            );
-          })}
+      <Field label="Sources to Search">
+        <div className="jb-sourcegrid">
+          {SOURCES.map((src) => (
+            <label key={src} className="jb-source">
+              <input
+                type="checkbox"
+                className="jb-check"
+                checked={(criteria.sources || []).includes(src)}
+                onChange={() => toggleSource(src)}
+              />
+              {src}
+            </label>
+          ))}
         </div>
-      </div>
+      </Field>
 
       <Field label="Results per Search">
         <Select
           value={String(criteria.results_per_search || 25)}
           onValueChange={(v) => onChange({ results_per_search: Number(v) })}
         >
-          <SelectTrigger className="w-full sm:w-[160px]"><SelectValue /></SelectTrigger>
-          <SelectContent>
+          <SelectTrigger className={SELECT_CLASS}><SelectValue /></SelectTrigger>
+          <SelectContent className="jb-popover">
             {RESULTS.map((r) => (
-              <SelectItem key={r} value={String(r)}>{r}</SelectItem>
+              <SelectItem key={r} value={String(r)} className="jb-item">{r}</SelectItem>
             ))}
           </SelectContent>
         </Select>

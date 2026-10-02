@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
@@ -16,37 +15,35 @@ export default function SavedSearches({ searches, activeId, onSelect, onCreate, 
   const active = searches.find((s) => s.id === activeId);
 
   return (
-    <div className="flex flex-wrap items-center gap-2 rounded-xl border border-border bg-card p-3">
-      <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-        Saved searches
-      </span>
+    <div className="jb-saved">
+      <span className="jb-eyebrow">Saved searches</span>
 
       <Select value={activeId || ''} onValueChange={onSelect}>
-        <SelectTrigger className="h-9 w-full sm:w-[240px]">
+        <SelectTrigger className="jb-select jb-control" aria-label="Saved searches">
           <SelectValue placeholder="Select a search" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="jb-popover">
           {searches.map((s) => (
-            <SelectItem key={s.id} value={s.id}>{searchLabel(s)}</SelectItem>
+            <SelectItem key={s.id} value={s.id} className="jb-item">{searchLabel(s)}</SelectItem>
           ))}
         </SelectContent>
       </Select>
 
-      <div className="ml-auto flex flex-wrap items-center gap-2">
-        <Button variant="outline" size="sm" onClick={() => setDialog('new')}>
-          <Plus className="h-4 w-4" /> New
-        </Button>
-        <Button variant="outline" size="sm" onClick={() => setDialog('rename')} disabled={!active}>
-          <Pencil className="h-4 w-4" /> Rename
-        </Button>
+      <div className="jb-actions">
+        <button type="button" className="jb-btn" onClick={() => setDialog('new')}>
+          <Plus className="h-3.5 w-3.5" /> New
+        </button>
+        <button type="button" className="jb-btn" onClick={() => setDialog('rename')} disabled={!active}>
+          <Pencil className="h-3.5 w-3.5" /> Rename
+        </button>
 
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="outline" size="sm" disabled={!active}>
-              <Trash2 className="h-4 w-4" /> Delete
-            </Button>
+            <button type="button" className="jb-btn" disabled={!active}>
+              <Trash2 className="h-3.5 w-3.5" /> Delete
+            </button>
           </AlertDialogTrigger>
-          <AlertDialogContent>
+          <AlertDialogContent className="jb-dialog jb-dialog">
             <AlertDialogHeader>
               <AlertDialogTitle>Delete &ldquo;{active ? searchLabel(active) : ''}&rdquo;?</AlertDialogTitle>
               <AlertDialogDescription>
@@ -54,8 +51,13 @@ export default function SavedSearches({ searches, activeId, onSelect, onCreate, 
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={() => onDelete(activeId)}>Delete</AlertDialogAction>
+              <AlertDialogCancel className="jb-btn jb-btn">Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                className="jb-btn jb-btn jb-btn-danger"
+                onClick={() => onDelete(activeId)}
+              >
+                Delete
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

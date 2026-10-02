@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { Check, Loader2, Settings as SettingsIcon, ListChecks } from 'lucide-react';
+import { Check, Loader2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
 import SavedSearches from '@/components/scraper/SavedSearches';
 import ScraperSettings from '@/components/scraper/ScraperSettings';
 import ScraperSummary from '@/components/scraper/ScraperSummary';
@@ -29,14 +29,18 @@ const DEFAULTS = {
 };
 
 const toCriteria = (record) => {
-  const { created_date, updated_date, created_by_id, ...rest } = record;
-  return { ...DEFAULTS, ...rest };
+  const clean = { ...record };
+  delete clean.created_date;
+  delete clean.updated_date;
+  delete clean.created_by_id;
+  return { ...DEFAULTS, ...clean };
 };
 
 export default function JobScraper() {
   const [searches, setSearches] = useState(null);
   const [criteria, setCriteria] = useState(null);
   const [saveState, setSaveState] = useState('idle');
+  const [panel, setPanel] = useState('settings');
   const skipSave = useRef(true);
 
   useEffect(() => {
@@ -114,72 +118,82 @@ export default function JobScraper() {
     }
   };
 
+  const renderTabs = (className) => (
+    <div className={cn('jb-tabs', className)}>
+      <button
+        type="button"
+        className={cn('jb-tab', panel === 'settings' && 'jb-tab-active')}
+        onClick={() => setPanel('settings')}
+      >
+        Settings
+      </button>
+      <button
+        type="button"
+        className={cn('jb-tab', panel === 'results' && 'jb-tab-active')}
+        onClick={() => setPanel('results')}
+      >
+        Results
+      </button>
+    </div>
+  );
+
   return (
-    <div className="mx-auto max-w-4xl px-6 py-8">
-      <header className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">AI Job Scraper</h1>
-        {saveState !== 'idle' && (
-          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            {saveState === 'saving' ? (
-              <>
-                <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                Saving…
-              </>
-            ) : (
-              <>
-                <Check className="h-3.5 w-3.5 text-success" />
-                Saved
-              </>
-            )}
-          </span>
-        )}
-      </header>
-
-      {criteria && searches && (
-        <div className="mb-4">
-          <SavedSearches
-            searches={searches}
-            activeId={criteria.id}
-            onSelect={selectSearch}
-            onCreate={createSearch}
-            onRename={renameSearch}
-            onDelete={deleteSearch}
-          />
-        </div>
-      )}
-
-      {criteria && (
-        <div className="mb-6">
-          <ScraperSummary criteria={criteria} />
-        </div>
-      )}
-
-      <Tabs defaultValue="settings" className="w-full">
-        <TabsList className="mb-6">
-          <TabsTrigger value="settings">
-            <SettingsIcon className="h-4 w-4" />
-            Settings
-          </TabsTrigger>
-          <TabsTrigger value="results">
-            <ListChecks className="h-4 w-4" />
-            Results
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="settings">
-          {criteria ? (
-            <ScraperSettings criteria={criteria} onChange={onChange} />
-          ) : (
-            <div className="flex justify-center py-20">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
-            </div>
+    <div className="jb-page">
+      <div className="jb-shell">
+        <header className="jb-top">
+          <h1 className="jb-title">AI Job Scraper</h1>
+          {saveState !== 'idle' && (
+            <span className="jb-state">
+              {saveState === 'saving' ? (
+                <>
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  Saving…
+                </>
+              ) : (
+                <>
+                  <Check className="h-3.5 w-3.5" />
+                  Saved
+                </>
+              )}
+            </span>
           )}
-        </TabsContent>
+        </header>
 
-        <TabsContent value="results">
-          <ScraperResults />
-        </TabsContent>
-      </Tabs>
+        {renderTabs('jb-tabs-mobile')}
+
+        <div className="jb-layout">
+          <aside className={cn('jb-panel jb-rail', panel === 'results' && 'jb-hide-mobile')}>
+            {criteria && searches && (
+              <SavedSearches
+                searches={searches}
+                activeId={criteria.id}
+                onSelect={selectSearch}
+                onCreate={createSearch}
+                onRename={renameSearch}
+                onDelete={deleteSearch}
+              />
+            )}
+
+            {criteria && <ScraperSummary criteria={criteria} />}
+
+            {renderTabs('jb-tabs-desktop')}
+
+            <h2 className="jb-sectiontitle">Settings</h2>
+
+            {criteria ? (
+              <ScraperSettings criteria={criteria} onChange={onChange} />
+            ) : (
+              <div className="flex justify-center py-14">
+                <div className="jb-spinner animate-spin" />
+              </div>
+            )}
+          </aside>
+
+          <main className={cn('jb-panel jb-main', panel === 'settings' && 'jb-hide-mobile')}>
+            <ScraperResults />
+          </main>
+        </div>
+      </div>
     </div>
   );
 }
