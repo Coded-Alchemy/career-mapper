@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { format, parseISO, differenceInCalendarDays } from 'date-fns';
+import { parseISO, differenceInCalendarDays } from 'date-fns';
 import { CalendarClock, ExternalLink } from 'lucide-react';
 import SectionTitle from '@/components/blueprint/SectionTitle';
 

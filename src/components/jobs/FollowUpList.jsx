@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { parseISO, isBefore, isToday, format, differenceInCalendarDays } from 'date-fns';
-import { Bell, Clock, ExternalLink } from 'lucide-react';
+import { Bell, Clock } from 'lucide-react';
 import { JOB_STATUS_STYLES } from '@/lib/jobConstants';
 import SectionTitle from '@/components/blueprint/SectionTitle';
 
