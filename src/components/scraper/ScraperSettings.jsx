@@ -22,12 +22,12 @@ const EXPERIENCE = [
 const CLEARANCE = ['None', 'Ability to Obtain', 'Public Trust', 'Secret', 'Top Secret', 'TS-SCI'];
 const RESULTS = [10, 25, 50];
 
-const SELECT_CLASS = 'jb-select jb-control';
+const SELECT_CLASS = 'bp-select bp-control';
 
 function Field({ label, children }) {
   return (
-    <div className="jb-field">
-      <Label className="jb-label">{label}</Label>
+    <div className="bp-field">
+      <Label className="bp-label">{label}</Label>
       {children}
     </div>
   );
@@ -40,9 +40,9 @@ function TagField({ label, value, onChange, placeholder }) {
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="jb-tagbox jb-control"
-        chipClassName="jb-chip"
-        inputClassName="jb-taginput"
+        className="bp-tagbox bp-control"
+        chipClassName="bp-chip"
+        inputClassName="bp-taginput"
       />
     </Field>
   );
@@ -58,7 +58,7 @@ export default function ScraperSettings({ criteria, onChange }) {
   };
 
   return (
-    <div className="jb-form">
+    <div className="bp-form">
       <TagField
         label="Job Titles"
         value={criteria.job_titles || []}
@@ -66,16 +66,16 @@ export default function ScraperSettings({ criteria, onChange }) {
         placeholder='e.g. "Help Desk Technician", "SOC Analyst"'
       />
 
-      <div className="jb-fieldrow">
+      <div className="bp-fieldrow">
         <Field label="Country">
           <Select
             value={criteria.country || 'United States'}
             onValueChange={(v) => onChange({ country: v, state_region: '' })}
           >
             <SelectTrigger className={SELECT_CLASS}><SelectValue /></SelectTrigger>
-            <SelectContent className="jb-popover">
+            <SelectContent className="bp-popover">
               {COUNTRIES.map((c) => (
-                <SelectItem key={c} value={c} className="jb-item">{c}</SelectItem>
+                <SelectItem key={c} value={c} className="bp-item">{c}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -88,9 +88,9 @@ export default function ScraperSettings({ criteria, onChange }) {
               onValueChange={(v) => onChange({ state_region: v })}
             >
               <SelectTrigger className={SELECT_CLASS}><SelectValue placeholder="Select state" /></SelectTrigger>
-              <SelectContent className="jb-popover">
+              <SelectContent className="bp-popover">
                 {stateList.map((s) => (
-                  <SelectItem key={s} value={s} className="jb-item">{s}</SelectItem>
+                  <SelectItem key={s} value={s} className="bp-item">{s}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -99,7 +99,7 @@ export default function ScraperSettings({ criteria, onChange }) {
               value={criteria.state_region || ''}
               onChange={(e) => onChange({ state_region: e.target.value })}
               placeholder="State / Region"
-              className="jb-input jb-control"
+              className="bp-input bp-control"
             />
           )}
         </Field>
@@ -112,20 +112,20 @@ export default function ScraperSettings({ criteria, onChange }) {
         placeholder="Add a city and press Enter"
       />
 
-      <div className="jb-toggleline">
-        <label className="jb-checklabel">
+      <div className="bp-toggleline">
+        <label className="bp-checklabel">
           <input
             type="checkbox"
-            className="jb-check"
+            className="bp-check"
             checked={!!criteria.remote_only}
             onChange={(e) => onChange({ remote_only: e.target.checked })}
           />
           Remote only
         </label>
-        <label className="jb-checklabel">
+        <label className="bp-checklabel">
           <input
             type="checkbox"
-            className="jb-check"
+            className="bp-check"
             checked={!!criteria.hybrid_ok}
             onChange={(e) => onChange({ hybrid_ok: e.target.checked })}
           />
@@ -133,9 +133,9 @@ export default function ScraperSettings({ criteria, onChange }) {
         </label>
       </div>
 
-      <div className="jb-triple">
+      <div className="bp-triple">
         <Field label="Minimum Salary">
-          <div className="jb-money">
+          <div className="bp-money">
             <span>$</span>
             <Input
               type="number"
@@ -144,7 +144,7 @@ export default function ScraperSettings({ criteria, onChange }) {
               value={criteria.min_salary ?? ''}
               onChange={(e) => onChange({ min_salary: e.target.value ? Number(e.target.value) : null })}
               placeholder="55,000"
-              className="jb-input jb-control"
+              className="bp-input bp-control"
             />
           </div>
         </Field>
@@ -155,9 +155,9 @@ export default function ScraperSettings({ criteria, onChange }) {
             onValueChange={(v) => onChange({ experience_level: v })}
           >
             <SelectTrigger className={SELECT_CLASS}><SelectValue /></SelectTrigger>
-            <SelectContent className="jb-popover">
+            <SelectContent className="bp-popover">
               {EXPERIENCE.map((o) => (
-                <SelectItem key={o.value} value={o.value} className="jb-item">{o.label}</SelectItem>
+                <SelectItem key={o.value} value={o.value} className="bp-item">{o.label}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -169,9 +169,9 @@ export default function ScraperSettings({ criteria, onChange }) {
             onValueChange={(v) => onChange({ clearance_level: v })}
           >
             <SelectTrigger className={SELECT_CLASS}><SelectValue /></SelectTrigger>
-            <SelectContent className="jb-popover">
+            <SelectContent className="bp-popover">
               {CLEARANCE.map((c) => (
-                <SelectItem key={c} value={c} className="jb-item">{c}</SelectItem>
+                <SelectItem key={c} value={c} className="bp-item">{c}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -193,12 +193,12 @@ export default function ScraperSettings({ criteria, onChange }) {
       />
 
       <Field label="Sources to Search">
-        <div className="jb-sourcegrid">
+        <div className="bp-sourcegrid">
           {SOURCES.map((src) => (
-            <label key={src} className="jb-source">
+            <label key={src} className="bp-source">
               <input
                 type="checkbox"
-                className="jb-check"
+                className="bp-check"
                 checked={(criteria.sources || []).includes(src)}
                 onChange={() => toggleSource(src)}
               />
@@ -214,9 +214,9 @@ export default function ScraperSettings({ criteria, onChange }) {
           onValueChange={(v) => onChange({ results_per_search: Number(v) })}
         >
           <SelectTrigger className={SELECT_CLASS}><SelectValue /></SelectTrigger>
-          <SelectContent className="jb-popover">
+          <SelectContent className="bp-popover">
             {RESULTS.map((r) => (
-              <SelectItem key={r} value={String(r)} className="jb-item">{r}</SelectItem>
+              <SelectItem key={r} value={String(r)} className="bp-item">{r}</SelectItem>
             ))}
           </SelectContent>
         </Select>

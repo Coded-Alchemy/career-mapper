@@ -15,35 +15,35 @@ export default function SavedSearches({ searches, activeId, onSelect, onCreate, 
   const active = searches.find((s) => s.id === activeId);
 
   return (
-    <div className="jb-saved">
-      <span className="jb-eyebrow">Saved searches</span>
+    <div className="bp-saved">
+      <span className="bp-eyebrow">Saved searches</span>
 
       <Select value={activeId || ''} onValueChange={onSelect}>
-        <SelectTrigger className="jb-select jb-control" aria-label="Saved searches">
+        <SelectTrigger className="bp-select bp-control" aria-label="Saved searches">
           <SelectValue placeholder="Select a search" />
         </SelectTrigger>
-        <SelectContent className="jb-popover">
+        <SelectContent className="bp-popover">
           {searches.map((s) => (
-            <SelectItem key={s.id} value={s.id} className="jb-item">{searchLabel(s)}</SelectItem>
+            <SelectItem key={s.id} value={s.id} className="bp-item">{searchLabel(s)}</SelectItem>
           ))}
         </SelectContent>
       </Select>
 
-      <div className="jb-actions">
-        <button type="button" className="jb-btn" onClick={() => setDialog('new')}>
+      <div className="bp-actions">
+        <button type="button" className="bp-btn" onClick={() => setDialog('new')}>
           <Plus className="h-3.5 w-3.5" /> New
         </button>
-        <button type="button" className="jb-btn" onClick={() => setDialog('rename')} disabled={!active}>
+        <button type="button" className="bp-btn" onClick={() => setDialog('rename')} disabled={!active}>
           <Pencil className="h-3.5 w-3.5" /> Rename
         </button>
 
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <button type="button" className="jb-btn" disabled={!active}>
+            <button type="button" className="bp-btn" disabled={!active}>
               <Trash2 className="h-3.5 w-3.5" /> Delete
             </button>
           </AlertDialogTrigger>
-          <AlertDialogContent className="jb-dialog jb-dialog">
+          <AlertDialogContent className="bp-dialog bp-dialog">
             <AlertDialogHeader>
               <AlertDialogTitle>Delete &ldquo;{active ? searchLabel(active) : ''}&rdquo;?</AlertDialogTitle>
               <AlertDialogDescription>
@@ -51,9 +51,9 @@ export default function SavedSearches({ searches, activeId, onSelect, onCreate, 
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel className="jb-btn jb-btn">Cancel</AlertDialogCancel>
+              <AlertDialogCancel className="bp-btn bp-btn">Cancel</AlertDialogCancel>
               <AlertDialogAction
-                className="jb-btn jb-btn jb-btn-danger"
+                className="bp-btn bp-btn bp-btn-danger"
                 onClick={() => onDelete(activeId)}
               >
                 Delete

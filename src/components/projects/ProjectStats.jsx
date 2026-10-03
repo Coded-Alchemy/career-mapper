@@ -19,30 +19,27 @@ export default function ProjectStats({ projects }) {
 
   return (
     <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-      <div className="rounded-xl border border-border bg-card p-4">
-        <div className="text-sm text-muted-foreground">Total Projects</div>
-        <div className="mt-1 text-2xl font-semibold text-foreground">{stats.total}</div>
+      <div className="bp-card p-4">
+        <div className="bp-label">Total Projects</div>
+        <div className="mt-2 text-2xl font-semibold text-foreground">{stats.total}</div>
       </div>
-      <div className="rounded-xl border border-border bg-card p-4">
-        <div className="text-sm text-muted-foreground">In Progress</div>
-        <div className="mt-1 text-2xl font-semibold text-warning">{stats.inProgress}</div>
+      <div className="bp-card p-4">
+        <div className="bp-label">In Progress</div>
+        <div className="mt-2 text-2xl font-semibold text-warning">{stats.inProgress}</div>
       </div>
-      <div className="rounded-xl border border-border bg-card p-4">
-        <div className="text-sm text-muted-foreground">Completed</div>
-        <div className="mt-1 text-2xl font-semibold text-success">{stats.completed}</div>
+      <div className="bp-card p-4">
+        <div className="bp-label">Completed</div>
+        <div className="mt-2 text-2xl font-semibold text-success">{stats.completed}</div>
       </div>
-      <div className="rounded-xl border border-border bg-card p-4">
-        <div className="text-sm text-muted-foreground">Top Technologies</div>
+      <div className="bp-card p-4">
+        <div className="bp-label">Top Technologies</div>
         <div className="mt-2 flex flex-wrap gap-1">
           {stats.topTech.length === 0 ? (
             <span className="text-xs text-muted-foreground">—</span>
           ) : (
             stats.topTech.map(([t, c]) => (
-              <span
-                key={t}
-                className="rounded bg-primary/10 px-1.5 py-0.5 text-xs font-medium text-primary"
-              >
-                {t} <span className="text-primary/60">{c}</span>
+              <span key={t} className="bp-chip">
+                {t} <span className="opacity-70">{c}</span>
               </span>
             ))
           )}

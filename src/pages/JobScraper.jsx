@@ -119,17 +119,17 @@ export default function JobScraper() {
   };
 
   const renderTabs = (className) => (
-    <div className={cn('jb-tabs', className)}>
+    <div className={cn('bp-tabs', className)}>
       <button
         type="button"
-        className={cn('jb-tab', panel === 'settings' && 'jb-tab-active')}
+        className={cn('bp-tab', panel === 'settings' && 'bp-tab-active')}
         onClick={() => setPanel('settings')}
       >
         Settings
       </button>
       <button
         type="button"
-        className={cn('jb-tab', panel === 'results' && 'jb-tab-active')}
+        className={cn('bp-tab', panel === 'results' && 'bp-tab-active')}
         onClick={() => setPanel('results')}
       >
         Results
@@ -138,12 +138,12 @@ export default function JobScraper() {
   );
 
   return (
-    <div className="jb-page">
-      <div className="jb-shell">
-        <header className="jb-top">
-          <h1 className="jb-title">AI Job Scraper</h1>
+    <div className="bp-page">
+      <div className="bp-shell">
+        <header className="bp-top">
+          <h1 className="bp-title">AI Job Scraper</h1>
           {saveState !== 'idle' && (
-            <span className="jb-state">
+            <span className="bp-state">
               {saveState === 'saving' ? (
                 <>
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -159,10 +159,10 @@ export default function JobScraper() {
           )}
         </header>
 
-        {renderTabs('jb-tabs-mobile')}
+        {renderTabs('bp-tabs-mobile')}
 
-        <div className="jb-layout">
-          <aside className={cn('jb-panel jb-rail', panel === 'results' && 'jb-hide-mobile')}>
+        <div className="bp-layout">
+          <aside className={cn('bp-panel bp-rail', panel === 'results' && 'bp-hide-mobile')}>
             {criteria && searches && (
               <SavedSearches
                 searches={searches}
@@ -176,20 +176,20 @@ export default function JobScraper() {
 
             {criteria && <ScraperSummary criteria={criteria} />}
 
-            {renderTabs('jb-tabs-desktop')}
+            {renderTabs('bp-tabs-desktop')}
 
-            <h2 className="jb-sectiontitle">Settings</h2>
+            <h2 className="bp-sectiontitle">Settings</h2>
 
             {criteria ? (
               <ScraperSettings criteria={criteria} onChange={onChange} />
             ) : (
               <div className="flex justify-center py-14">
-                <div className="jb-spinner animate-spin" />
+                <div className="bp-spinner animate-spin" />
               </div>
             )}
           </aside>
 
-          <main className={cn('jb-panel jb-main', panel === 'settings' && 'jb-hide-mobile')}>
+          <main className={cn('bp-panel bp-main', panel === 'settings' && 'bp-hide-mobile')}>
             <ScraperResults />
           </main>
         </div>

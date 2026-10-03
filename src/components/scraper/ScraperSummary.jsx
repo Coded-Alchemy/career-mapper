@@ -14,7 +14,7 @@ export default function ScraperSummary({ criteria }) {
   }
 
   return (
-    <div className="jb-summary">
+    <div className="bp-summary">
       <strong>Searching {sources.length} source{sources.length === 1 ? '' : 's'}</strong>
       <br />
       for {level ? `${level} ` : ''}{titleStr} roles

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { addDays, format } from 'date-fns';
 import { Plus, LayoutDashboard, Columns3, Table2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
-import { Button } from '@/components/ui/button';
+import PageShell from '@/components/blueprint/PageShell';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import JobStats from '@/components/jobs/JobStats';
 import FollowUpList from '@/components/jobs/FollowUpList';
@@ -66,28 +66,27 @@ export default function JobTracker() {
   };
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-8">
-      <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-          Job Tracker
-        </h1>
-        <Button onClick={openNew}>
-          <Plus className="h-4 w-4" />
+    <PageShell
+      title="Job Tracker"
+      actions={
+        <button type="button" className="bp-btn bp-btn-primary" onClick={openNew}>
+          <Plus className="h-3.5 w-3.5" />
           Add Application
-        </Button>
-      </header>
+        </button>
+      }
+    >
 
       <Tabs defaultValue="dashboard" className="w-full">
-        <TabsList className="mb-6">
-          <TabsTrigger value="dashboard">
+        <TabsList className="bp-tablist mb-6">
+          <TabsTrigger value="dashboard" className="bp-tab">
             <LayoutDashboard className="h-4 w-4" />
             Dashboard
           </TabsTrigger>
-          <TabsTrigger value="kanban">
+          <TabsTrigger value="kanban" className="bp-tab">
             <Columns3 className="h-4 w-4" />
             Kanban
           </TabsTrigger>
-          <TabsTrigger value="table">
+          <TabsTrigger value="table" className="bp-tab">
             <Table2 className="h-4 w-4" />
             Table
           </TabsTrigger>
@@ -96,7 +95,7 @@ export default function JobTracker() {
         <TabsContent value="dashboard" className="space-y-6">
           {loading ? (
             <div className="flex justify-center py-20">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
+              <div className="bp-spinner animate-spin" />
             </div>
           ) : (
             <>
@@ -119,7 +118,7 @@ export default function JobTracker() {
         <TabsContent value="kanban">
           {loading ? (
             <div className="flex justify-center py-20">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
+              <div className="bp-spinner animate-spin" />
             </div>
           ) : (
             <JobKanban
@@ -133,7 +132,7 @@ export default function JobTracker() {
         <TabsContent value="table">
           {loading ? (
             <div className="flex justify-center py-20">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
+              <div className="bp-spinner animate-spin" />
             </div>
           ) : (
             <JobTable applications={applications} onCardClick={openEdit} />
@@ -148,6 +147,6 @@ export default function JobTracker() {
         onSave={handleSave}
         onDelete={handleDelete}
       />
-    </div>
+    </PageShell>
   );
 }

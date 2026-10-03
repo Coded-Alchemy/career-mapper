@@ -20,31 +20,31 @@ export default function ScrapedJobCard({ job, onSaveToTracker, onNotInterested }
   const posted = relDays(job.date_posted);
 
   return (
-    <article className="jb-job">
-      <div className="jb-jobtop">
+    <article className="bp-job">
+      <div className="bp-jobtop">
         <div className="min-w-0">
-          <h3 className="jb-jobtitle truncate">{job.title}</h3>
-          <div className="jb-company truncate">{job.company}</div>
+          <h3 className="bp-jobtitle truncate">{job.title}</h3>
+          <div className="bp-company truncate">{job.company}</div>
         </div>
         {score != null && (
-          <div className="jb-score">
-            <span className="jb-label">Relevance</span>
+          <div className="bp-score">
+            <span className="bp-label">Relevance</span>
             <strong>{score}</strong>
           </div>
         )}
       </div>
 
-      <div className="jb-chips">
-        {job.source && <span className="jb-chip">{job.source}</span>}
+      <div className="bp-chips">
+        {job.source && <span className="bp-chip">{job.source}</span>}
         {job.clearance_required && job.clearance_required !== 'None' && (
-          <span className="jb-chip">{job.clearance_required}</span>
+          <span className="bp-chip">{job.clearance_required}</span>
         )}
-        {job.experience_level && <span className="jb-chip">{job.experience_level}</span>}
+        {job.experience_level && <span className="bp-chip">{job.experience_level}</span>}
       </div>
 
-      {job.description_summary && <p className="jb-description">{job.description_summary}</p>}
+      {job.description_summary && <p className="bp-description">{job.description_summary}</p>}
 
-      <div className="jb-meta">
+      <div className="bp-meta">
         {job.location && (
           <span>
             <MapPin className="h-3 w-3" />
@@ -60,17 +60,17 @@ export default function ScrapedJobCard({ job, onSaveToTracker, onNotInterested }
         )}
       </div>
 
-      <div className="jb-jobactions">
+      <div className="bp-jobactions">
         <button
           type="button"
-          className="jb-btn"
+          className="bp-btn"
           onClick={() => onSaveToTracker(job)}
           disabled={job.saved}
         >
           <Bookmark className="h-3.5 w-3.5" />
           {job.saved ? 'Saved' : 'Save to Tracker'}
         </button>
-        <button type="button" className="jb-btn" onClick={() => onNotInterested(job)}>
+        <button type="button" className="bp-btn" onClick={() => onNotInterested(job)}>
           <Ban className="h-3.5 w-3.5" />
           Not Interested
         </button>
@@ -78,7 +78,7 @@ export default function ScrapedJobCard({ job, onSaveToTracker, onNotInterested }
           href={viewUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="jb-link"
+          className="bp-link"
         >
           View Posting <ExternalLink className="h-3 w-3" />
         </a>

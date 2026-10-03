@@ -7,6 +7,8 @@ import { computeHabitStreak } from '@/lib/habitStreak';
 import StatCard from '@/components/home/StatCard';
 import QuickLinks from '@/components/home/QuickLinks';
 import FollowUpCard from '@/components/home/FollowUpCard';
+import PageShell from '@/components/blueprint/PageShell';
+import SectionTitle from '@/components/blueprint/SectionTitle';
 
 const INTERVIEW_STATUSES = ['Phone Screen', 'Interview', 'Final Round'];
 const CLOSED_STATUSES = ['Rejected', 'Ghosted'];
@@ -90,14 +92,11 @@ export default function Home() {
   }, [data]);
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-8">
-      {/* Greeting */}
-      <header className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-          Welcome back, {displayName}
-        </h1>
-        <p className="mt-1 text-sm text-muted-foreground">{today}</p>
-      </header>
+    <PageShell
+      title={`Welcome back, ${displayName}`}
+      eyebrow="Career overview"
+      subtitle={today}
+    >
 
       {/* Stat cards */}
       <section className="grid grid-cols-2 gap-3 md:grid-cols-3">
@@ -152,10 +151,10 @@ export default function Home() {
       <section className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
         <FollowUpCard items={followUps} loading={loading} />
         <div>
-          <h2 className="mb-3 text-sm font-semibold text-foreground">Quick Links</h2>
+          <SectionTitle className="mb-3">Quick Links</SectionTitle>
           <QuickLinks />
         </div>
       </section>
-    </div>
+    </PageShell>
   );
 }

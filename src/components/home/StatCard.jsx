@@ -10,17 +10,14 @@ const TONES = {
 
 export default function StatCard({ icon: Icon, label, value, to, tone = 'default', loading }) {
   return (
-    <Link
-      to={to}
-      className="group rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary/50"
-    >
-      <div className="flex items-center justify-between">
-        <span className="text-sm text-muted-foreground">{label}</span>
-        <Icon className={cn('h-4 w-4', TONES[tone])} />
+    <Link to={to} className="bp-card bp-card-interactive group p-4">
+      <div className="flex items-center justify-between gap-2">
+        <span className="bp-label">{label}</span>
+        <Icon className={cn('h-4 w-4 shrink-0', TONES[tone])} />
       </div>
       <div className="mt-2 text-2xl font-semibold text-foreground">
         {loading ? (
-          <span className="inline-block h-7 w-10 animate-pulse rounded bg-muted" />
+          <span className="inline-block h-7 w-10 animate-pulse rounded bg-secondary" />
         ) : (
           value
         )}

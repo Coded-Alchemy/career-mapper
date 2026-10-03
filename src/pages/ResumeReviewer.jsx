@@ -3,6 +3,7 @@ import { base44 } from '@/api/base44Client';
 import ResumeReviewForm from '@/components/resume/ResumeReviewForm';
 import ResumeReviewResult from '@/components/resume/ResumeReviewResult';
 import ResumeReviewHistory from '@/components/resume/ResumeReviewHistory';
+import PageShell from '@/components/blueprint/PageShell';
 
 const PROGRESS_MSGS = [
   'Scanning for ATS keywords…',
@@ -93,10 +94,7 @@ export default function ResumeReviewer() {
   };
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-8">
-      <h1 className="mb-6 text-2xl font-semibold tracking-tight text-foreground">
-        Resume & LinkedIn Reviewer
-      </h1>
+    <PageShell title="Resume & LinkedIn Reviewer">
       <div className="space-y-6">
         <ResumeReviewForm
           resumeText={resumeText}
@@ -118,6 +116,6 @@ export default function ResumeReviewer() {
           onDelete={deleteReview}
         />
       </div>
-    </div>
+    </PageShell>
   );
 }

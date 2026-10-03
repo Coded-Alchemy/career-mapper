@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { format } from 'date-fns';
 import { Plus, Sparkles } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
-import { Button } from '@/components/ui/button';
+import PageShell from '@/components/blueprint/PageShell';
 import ProjectStats from '@/components/projects/ProjectStats';
 import ProjectFilters from '@/components/projects/ProjectFilters';
 import ProjectBoard from '@/components/projects/ProjectBoard';
@@ -79,22 +79,21 @@ export default function ProjectTracker() {
   };
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-8">
-      <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-          Project Tracker
-        </h1>
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={() => setPlannerOpen(true)}>
-            <Sparkles className="h-4 w-4" />
+    <PageShell
+      title="Project Tracker"
+      actions={
+        <>
+          <button type="button" className="bp-btn" onClick={() => setPlannerOpen(true)}>
+            <Sparkles className="h-3.5 w-3.5" />
             Project Planner
-          </Button>
-          <Button onClick={openNew}>
-            <Plus className="h-4 w-4" />
+          </button>
+          <button type="button" className="bp-btn bp-btn-primary" onClick={openNew}>
+            <Plus className="h-3.5 w-3.5" />
             Add Project
-          </Button>
-        </div>
-      </header>
+          </button>
+        </>
+      }
+    >
 
       <div className="mb-6">
         <ProjectStats projects={projects} />
@@ -110,13 +109,12 @@ export default function ProjectTracker() {
 
       {loading ? (
         <div className="flex justify-center py-20">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
+          <div className="bp-spinner animate-spin" />
         </div>
       ) : filtered.length === 0 && projects.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-border py-16 text-center">
-          <p className="text-sm text-muted-foreground">
-            No projects yet. Add one or let the AI plan one for you.
-          </p>
+        <div className="bp-empty">
+          <strong>No projects yet</strong>
+          <p>Add one or let the AI plan one for you.</p>
         </div>
       ) : (
         <ProjectBoard
@@ -139,6 +137,6 @@ export default function ProjectTracker() {
         onClose={() => setPlannerOpen(false)}
         onAdd={handlePlannerAdd}
       />
-    </div>
+    </PageShell>
   );
 }

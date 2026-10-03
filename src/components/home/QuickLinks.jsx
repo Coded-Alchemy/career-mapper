@@ -41,7 +41,7 @@ export default function QuickLinks() {
         <Link
           key={to}
           to={to}
-          className={`group flex items-start gap-3 rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary/50 ${i === LINKS.length - 1 ? 'sm:col-span-2' : ''}`}
+          className={`bp-card bp-card-interactive group flex items-start gap-3 p-4 ${i === LINKS.length - 1 ? 'sm:col-span-2' : ''}`}
         >
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <Icon className="h-5 w-5" />

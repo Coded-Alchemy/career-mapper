@@ -22,28 +22,28 @@ export default function SearchNameDialog({
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-      <DialogContent className="jb-dialog jb-dialog sm:max-w-md">
+      <DialogContent className="bp-dialog bp-dialog sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
 
-        <div className="jb-field">
-          <Label htmlFor="search-name" className="jb-label">Search name</Label>
+        <div className="bp-field">
+          <Label htmlFor="search-name" className="bp-label">Search name</Label>
           <Input
             id="search-name"
             value={name}
             autoFocus
             placeholder="e.g. Boston Help Desk"
-            className="jb-input jb-control"
+            className="bp-input bp-control"
             onChange={(e) => setName(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && submit()}
           />
         </div>
 
         <DialogFooter>
-          <button type="button" className="jb-btn" onClick={onClose}>Cancel</button>
-          <button type="button" className="jb-btn jb-btn-primary" onClick={submit} disabled={!name.trim()}>
+          <button type="button" className="bp-btn" onClick={onClose}>Cancel</button>
+          <button type="button" className="bp-btn bp-btn-primary" onClick={submit} disabled={!name.trim()}>
             {confirmLabel}
           </button>
         </DialogFooter>

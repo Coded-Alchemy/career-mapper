@@ -9,9 +9,9 @@ function Stat({ label, value, tone }) {
       ? 'text-success'
       : 'text-foreground';
   return (
-    <div className="rounded-xl border border-border bg-card p-4">
-      <div className="text-sm text-muted-foreground">{label}</div>
-      <div className={`mt-1 text-2xl font-semibold ${toneClass}`}>{value}</div>
+    <div className="bp-card p-4">
+      <div className="bp-label">{label}</div>
+      <div className={`mt-2 text-2xl font-semibold ${toneClass}`}>{value}</div>
     </div>
   );
 }

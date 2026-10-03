@@ -3,7 +3,6 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import { format, parseISO, isValid } from 'date-fns';
 import { ArrowLeft, Pencil, Save, X, ExternalLink, Trash2, MessageSquare } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -16,6 +15,8 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import PageShell from '@/components/blueprint/PageShell';
+import SectionTitle from '@/components/blueprint/SectionTitle';
 import TagInput from '@/components/projects/TagInput';
 import StatusTimeline from '@/components/jobs/StatusTimeline';
 import InteractionLog from '@/components/jobs/InteractionLog';
@@ -35,7 +36,7 @@ function fmtDate(d) {
 function DetailField({ label, className = '', children }) {
   return (
     <div className={className}>
-      <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{label}</div>
+      <div className="bp-label">{label}</div>
       <div className="mt-1 text-sm text-foreground">{children}</div>
     </div>
   );
@@ -79,67 +80,68 @@ export default function ApplicationDetail() {
   if (loading) {
     return (
       <div className="flex justify-center py-20">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
+        <div className="bp-spinner animate-spin" />
       </div>
     );
   }
 
   if (!app) {
     return (
-      <div className="mx-auto max-w-3xl px-6 py-16 text-center">
-        <p className="text-sm text-muted-foreground">Application not found.</p>
-        <Button asChild variant="link" className="mt-2">
-          <Link to="/jobs">Back to Job Tracker</Link>
-        </Button>
-      </div>
+      <PageShell title="Application not found">
+        <p className="bp-subtitle">This application may have been deleted.</p>
+        <Link to="/jobs" className="bp-btn mt-4">
+          Back to Job Tracker
+        </Link>
+      </PageShell>
     );
   }
 
   const url = normalizeUrl(app.job_url);
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-8">
-      <Link to="/jobs" className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
-        <ArrowLeft className="h-4 w-4" />
-        Back to Job Tracker
-      </Link>
-
-      <header className="mb-5 flex flex-wrap items-start justify-between gap-3">
-        <div className="min-w-0">
-          <h1 className="truncate text-2xl font-semibold tracking-tight text-foreground">{app.company}</h1>
-          <p className="truncate text-sm text-muted-foreground">{app.title}</p>
-        </div>
-        <div className="flex gap-2">
-          {editing ? (
-            <>
-              <Button variant="outline" onClick={() => setEditing(false)}>
-                <X className="h-4 w-4" />
-                Cancel
-              </Button>
-              <Button onClick={save} disabled={!form.company.trim() || !form.title.trim()}>
-                <Save className="h-4 w-4" />
-                Save
-              </Button>
-            </>
-          ) : (
-            <>
-              {['Phone Screen', 'Interview', 'Final Round'].includes(app.status) && (
-                <Button variant="outline" onClick={() => navigate(`/interview?app=${app.id}`)}>
-                  <MessageSquare className="h-4 w-4" />
-                  Prep for Interview
-                </Button>
-              )}
-              <Button variant="outline" onClick={startEdit}>
-                <Pencil className="h-4 w-4" />
-                Edit
-              </Button>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="destructive">
-                    <Trash2 className="h-4 w-4" />
-                    Delete
-                  </Button>
-                </AlertDialogTrigger>
+    <PageShell
+      title={app.company}
+      subtitle={app.title}
+      actions={
+        editing ? (
+          <>
+            <button type="button" className="bp-btn" onClick={() => setEditing(false)}>
+              <X className="h-3.5 w-3.5" />
+              Cancel
+            </button>
+            <button
+              type="button"
+              className="bp-btn bp-btn-primary"
+              onClick={save}
+              disabled={!form.company.trim() || !form.title.trim()}
+            >
+              <Save className="h-3.5 w-3.5" />
+              Save
+            </button>
+          </>
+        ) : (
+          <>
+            {['Phone Screen', 'Interview', 'Final Round'].includes(app.status) && (
+              <button
+                type="button"
+                className="bp-btn"
+                onClick={() => navigate(`/interview?app=${app.id}`)}
+              >
+                <MessageSquare className="h-3.5 w-3.5" />
+                Prep for Interview
+              </button>
+            )}
+            <button type="button" className="bp-btn" onClick={startEdit}>
+              <Pencil className="h-3.5 w-3.5" />
+              Edit
+            </button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <button type="button" className="bp-btn bp-btn-danger">
+                  <Trash2 className="h-3.5 w-3.5" />
+                  Delete
+                </button>
+              </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
                     <AlertDialogTitle>Delete this application?</AlertDialogTitle>
@@ -156,19 +158,25 @@ export default function ApplicationDetail() {
                       Delete
                     </AlertDialogAction>
                   </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </>
-          )}
-        </div>
-      </header>
+              </AlertDialogContent>
+            </AlertDialog>
+          </>
+        )
+      }
+    >
+      <div className="mb-6">
+        <Link to="/jobs" className="bp-link">
+          <ArrowLeft className="h-3.5 w-3.5" />
+          Back to Job Tracker
+        </Link>
+      </div>
 
-      <div className="mb-6 rounded-xl border border-border bg-card p-3">
+      <div className="bp-panel mb-6 p-3">
         <StatusTimeline status={app.status} />
       </div>
 
       {editing ? (
-        <div className="mb-6 space-y-4 rounded-xl border border-border bg-card p-5">
+        <div className="bp-panel mb-6 space-y-4 p-5">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label>Company</Label>
@@ -232,7 +240,7 @@ export default function ApplicationDetail() {
           </div>
         </div>
       ) : (
-        <div className="mb-6 grid grid-cols-1 gap-x-6 gap-y-4 rounded-xl border border-border bg-card p-5 sm:grid-cols-2">
+        <div className="bp-panel mb-6 grid grid-cols-1 gap-x-6 gap-y-4 p-5 sm:grid-cols-2">
           <DetailField label="Company">{app.company}</DetailField>
           <DetailField label="Title">{app.title}</DetailField>
           <DetailField label="Status">
@@ -268,7 +276,7 @@ export default function ApplicationDetail() {
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-md bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary hover:bg-primary/20"
+                className="bp-btn"
               >
                 Open Job Posting
                 <ExternalLink className="h-3.5 w-3.5" />
@@ -282,9 +290,9 @@ export default function ApplicationDetail() {
       )}
 
       <section>
-        <h2 className="mb-3 text-lg font-semibold text-foreground">Interactions</h2>
+        <SectionTitle>Interactions</SectionTitle>
         <InteractionLog applicationId={app.id} />
       </section>
-    </div>
+    </PageShell>
   );
 }

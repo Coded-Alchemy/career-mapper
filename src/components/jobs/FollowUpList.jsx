@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { parseISO, isBefore, isToday, format, differenceInCalendarDays } from 'date-fns';
 import { Bell, Clock, ExternalLink } from 'lucide-react';
 import { JOB_STATUS_STYLES } from '@/lib/jobConstants';
+import SectionTitle from '@/components/blueprint/SectionTitle';
 
 export default function FollowUpList({ applications, onSnooze, onOpen }) {
   const due = useMemo(() => {
@@ -26,11 +27,11 @@ export default function FollowUpList({ applications, onSnooze, onOpen }) {
   }, [applications]);
 
   return (
-    <div className="rounded-xl border border-border bg-card">
-      <div className="flex items-center gap-2 border-b border-border px-4 py-3">
+    <div className="bp-card">
+      <div className="bp-cardhead">
         <Bell className="h-4 w-4 text-warning" />
-        <h2 className="text-sm font-semibold text-foreground">Needs Follow-Up</h2>
-        <span className="ml-auto text-xs text-muted-foreground">{due.length}</span>
+        <SectionTitle>Needs Follow-Up</SectionTitle>
+        <span className="bp-count ml-auto">{due.length}</span>
       </div>
 
       {due.length === 0 ? (
@@ -42,7 +43,7 @@ export default function FollowUpList({ applications, onSnooze, onOpen }) {
           {due.map(({ app, label }) => (
             <li
               key={app.id}
-              className="flex items-center gap-3 px-4 py-3 hover:bg-muted/30"
+              className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-primary/5"
             >
               <button
                 onClick={() => onOpen(app)}
@@ -68,7 +69,7 @@ export default function FollowUpList({ applications, onSnooze, onOpen }) {
               </button>
               <button
                 onClick={() => onSnooze(app)}
-                className="shrink-0 rounded-md border border-border px-2.5 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+                className="bp-btn shrink-0"
               >
                 Snooze 1w
               </button>

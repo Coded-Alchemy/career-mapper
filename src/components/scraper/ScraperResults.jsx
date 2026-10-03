@@ -21,7 +21,7 @@ const SOURCES = [
   'ZipRecruiter', 'Glassdoor', 'Wellfound', 'Google Jobs',
 ];
 
-const SELECT_CLASS = 'jb-select jb-control';
+const SELECT_CLASS = 'bp-select bp-control';
 
 function salaryValue(s) {
   if (!s) return 0;
@@ -148,8 +148,8 @@ export default function ScraperResults() {
 
   return (
     <div>
-      <div className="jb-resultshead">
-        <button type="button" className="jb-btn jb-btn-primary" onClick={runSearch} disabled={loading}>
+      <div className="bp-resultshead">
+        <button type="button" className="bp-btn bp-btn-primary" onClick={runSearch} disabled={loading}>
           {loading ? (
             <>
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -163,7 +163,7 @@ export default function ScraperResults() {
           )}
         </button>
         {batch && (
-          <div className="jb-count">
+          <div className="bp-count">
             <strong>{batch.count}</strong> results
             {batch.created_at && (
               <span> · {format(parseISO(batch.created_at), 'MMM d, yyyy h:mm a')}</span>
@@ -173,26 +173,26 @@ export default function ScraperResults() {
       </div>
 
       {loading && (
-        <div className="jb-notice">
-          <Loader2 className="jb-notice-icon h-4 w-4 animate-spin" />
+        <div className="bp-notice">
+          <Loader2 className="bp-notice-icon h-4 w-4 animate-spin" />
           <span>{progressMsg}</span>
         </div>
       )}
 
-      {error && <div className="jb-notice jb-notice-error">{error}</div>}
-      {info && !error && <div className="jb-notice jb-notice-warn">{info}</div>}
+      {error && <div className="bp-notice bp-notice-error">{error}</div>}
+      {info && !error && <div className="bp-notice bp-notice-warn">{info}</div>}
 
       {!loading && jobs.length > 0 && (
         <>
-          <div className="jb-filters">
+          <div className="bp-filters">
             <Select value={sort} onValueChange={setSort}>
               <SelectTrigger className={SELECT_CLASS}>
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="jb-popover">
-                <SelectItem value="date" className="jb-item">Newest first</SelectItem>
-                <SelectItem value="relevance" className="jb-item">Relevance</SelectItem>
-                <SelectItem value="salary" className="jb-item">Salary (high to low)</SelectItem>
+              <SelectContent className="bp-popover">
+                <SelectItem value="date" className="bp-item">Newest first</SelectItem>
+                <SelectItem value="relevance" className="bp-item">Relevance</SelectItem>
+                <SelectItem value="salary" className="bp-item">Salary (high to low)</SelectItem>
               </SelectContent>
             </Select>
 
@@ -200,27 +200,27 @@ export default function ScraperResults() {
               <SelectTrigger className={SELECT_CLASS}>
                 <SelectValue placeholder="Source" />
               </SelectTrigger>
-              <SelectContent className="jb-popover">
-                <SelectItem value="all" className="jb-item">All sources</SelectItem>
+              <SelectContent className="bp-popover">
+                <SelectItem value="all" className="bp-item">All sources</SelectItem>
                 {availableSources.map((s) => (
-                  <SelectItem key={s} value={s} className="jb-item">{s}</SelectItem>
+                  <SelectItem key={s} value={s} className="bp-item">{s}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
 
-            <label className="jb-checklabel">
+            <label className="bp-checklabel">
               <input
                 type="checkbox"
-                className="jb-check"
+                className="bp-check"
                 checked={savedOnly}
                 onChange={(e) => setSavedOnly(e.target.checked)}
               />
               Saved only
             </label>
-            <label className="jb-checklabel">
+            <label className="bp-checklabel">
               <input
                 type="checkbox"
-                className="jb-check"
+                className="bp-check"
                 checked={hideNotInterested}
                 onChange={(e) => setHideNotInterested(e.target.checked)}
               />
@@ -228,9 +228,9 @@ export default function ScraperResults() {
             </label>
           </div>
 
-          <div className="jb-cards">
+          <div className="bp-cards">
             {visibleJobs.length === 0 ? (
-              <p className="jb-empty">No results match your filters.</p>
+              <p className="bp-empty">No results match your filters.</p>
             ) : (
               visibleJobs.map((job) => (
                 <ScrapedJobCard
@@ -246,11 +246,11 @@ export default function ScraperResults() {
       )}
 
       {!loading && jobs.length === 0 && !error && (
-        <div className="jb-empty">
-          <Search className="jb-empty-icon h-6 w-6" />
+        <div className="bp-empty">
+          <Search className="bp-empty-icon h-6 w-6" />
           <strong>No results yet</strong>
           <p>
-            Press <span className="jb-empty-em">Run Search</span> to find fresh job postings matching your criteria.
+            Press <span className="bp-empty-em">Run Search</span> to find fresh job postings matching your criteria.
           </p>
         </div>
       )}

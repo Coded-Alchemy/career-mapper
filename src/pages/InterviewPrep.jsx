@@ -4,6 +4,7 @@ import { base44 } from '@/api/base44Client';
 import PrepForm from '@/components/interview/PrepForm';
 import PrepResult from '@/components/interview/PrepResult';
 import PrepHistory from '@/components/interview/PrepHistory';
+import PageShell from '@/components/blueprint/PageShell';
 
 const PROGRESS_MSGS = [
   'Reading the job description…',
@@ -126,8 +127,7 @@ export default function InterviewPrep() {
   };
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-8">
-      <h1 className="mb-6 text-2xl font-semibold tracking-tight text-foreground">Interview Prep</h1>
+    <PageShell title="Interview Prep">
       <div className="space-y-6">
         <PrepForm
           company={company}
@@ -154,6 +154,6 @@ export default function InterviewPrep() {
           applications={applications}
         />
       </div>
-    </div>
+    </PageShell>
   );
 }

@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { ExternalLink } from 'lucide-react';
 import { JOB_STATUS_STYLES } from '@/lib/jobConstants';
+import SectionTitle from '@/components/blueprint/SectionTitle';
 
 function normalizeUrl(url) {
   if (!url) return null;
@@ -16,10 +17,10 @@ export default function RecentApplications({ applications, onOpen }) {
   }, [applications]);
 
   return (
-    <div className="rounded-xl border border-border bg-card">
-      <div className="flex items-center justify-between border-b border-border px-4 py-3">
-        <h2 className="text-sm font-semibold text-foreground">Recent Applications</h2>
-        <span className="text-xs text-muted-foreground">{recent.length}</span>
+    <div className="bp-card">
+      <div className="bp-cardhead">
+        <SectionTitle>Recent Applications</SectionTitle>
+        <span className="bp-count ml-auto">{recent.length}</span>
       </div>
 
       {recent.length === 0 ? (
@@ -33,7 +34,7 @@ export default function RecentApplications({ applications, onOpen }) {
             return (
               <li
                 key={app.id}
-                className="flex items-center gap-3 px-4 py-3 hover:bg-muted/30"
+                className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-primary/5"
               >
                 <button
                   onClick={() => onOpen(app)}
@@ -59,7 +60,7 @@ export default function RecentApplications({ applications, onOpen }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={(e) => e.stopPropagation()}
-                    className="flex shrink-0 items-center gap-1 rounded-md bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/20"
+                    className="bp-link shrink-0"
                   >
                     Apply Now
                     <ExternalLink className="h-3 w-3" />
