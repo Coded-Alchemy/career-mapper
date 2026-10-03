@@ -173,9 +173,14 @@ export default function JobTable({ applications, onCardClick }) {
       </div>
 
       {/* Desktop table — the header row stays put and only the rows below it
-          scroll, so the scrollbar starts under the header. */}
-      <div className="hidden overflow-hidden rounded-xl border border-border md:flex md:flex-col">
-        <div className="pr-[var(--scrollbar-size)]">
+          scroll, so the scrollbar starts under the header. The cap sits on the
+          whole box so its border never pushes the page into a page scrollbar. */}
+      <div
+        ref={tableRef}
+        style={{ maxHeight: tableHeight ?? undefined }}
+        className="hidden overflow-hidden rounded-xl border border-border md:flex md:flex-col"
+      >
+        <div className="shrink-0 pr-[var(--scrollbar-size)]">
           <table className="w-full table-fixed">
             {COLGROUP}
             <thead className="border-b border-border">
@@ -194,11 +199,7 @@ export default function JobTable({ applications, onCardClick }) {
           </table>
         </div>
 
-        <div
-          ref={tableRef}
-          style={{ maxHeight: tableHeight ?? undefined }}
-          className="bp-gutter overflow-y-auto"
-        >
+        <div className="bp-gutter flex-1 overflow-y-auto">
           <table className="w-full table-fixed">
             {COLGROUP}
             <tbody className="divide-y divide-border">

@@ -39,7 +39,11 @@ export default function JobKanban({ applications, onStatusChange, onCardClick })
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div ref={listRef} className="flex gap-4 overflow-x-auto pb-2">
+      <div
+        ref={listRef}
+        style={{ maxHeight: listHeight ?? undefined }}
+        className="flex gap-4 overflow-x-auto pb-2"
+      >
         {JOB_STATUSES.map((status) => {
           const items = applications.filter((a) => a.status === status);
           const header = COLUMN_HEADER[status] || {
@@ -50,7 +54,6 @@ export default function JobKanban({ applications, onStatusChange, onCardClick })
             <Droppable droppableId={status} key={status}>
               {(provided, snapshot) => (
                 <div
-                  style={{ height: listHeight ?? undefined }}
                   className={cn(
                     'flex w-72 shrink-0 flex-col overflow-hidden rounded-xl border bg-background/40',
                     header.border

@@ -3,7 +3,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 // Space kept between the bottom of a scrollable list and the bottom of the
 // viewport — matches the page's bottom padding so lists line up with the
 // account / log out block in the sidebar and the page itself never overflows.
-const BOTTOM_GAP = 42;
+const BOTTOM_GAP = 44;
 const MIN_HEIGHT = 300;
 
 /**
