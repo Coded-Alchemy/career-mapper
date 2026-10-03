@@ -2,6 +2,7 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { ExternalLink, MapPin } from 'lucide-react';
 import { differenceInCalendarDays, parseISO, isValid } from 'date-fns';
 import { cn } from '@/lib/utils';
+import useListHeight from '@/hooks/useListHeight';
 import { JOB_STATUSES, JOB_STATUS_STYLES } from '@/lib/jobConstants';
 
 function normalizeUrl(url) {
@@ -27,6 +28,8 @@ const COLUMN_HEADER = {
 };
 
 export default function JobKanban({ applications, onStatusChange, onCardClick }) {
+  const [listRef, listHeight] = useListHeight();
+
   const onDragEnd = (result) => {
     if (!result.destination) return;
     const destStatus = result.destination.droppableId;
@@ -36,7 +39,7 @@ export default function JobKanban({ applications, onStatusChange, onCardClick })
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="flex gap-4 overflow-x-auto pb-2">
+      <div ref={listRef} className="flex gap-4 overflow-x-auto pb-2">
         {JOB_STATUSES.map((status) => {
           const items = applications.filter((a) => a.status === status);
           const header = COLUMN_HEADER[status] || {
@@ -49,8 +52,9 @@ export default function JobKanban({ applications, onStatusChange, onCardClick })
                 <div
                   ref={provided.innerRef}
                   {...provided.droppableProps}
+                  style={{ height: listHeight ?? undefined }}
                   className={cn(
-                    'flex h-[calc(100vh-280px)] min-h-[300px] w-72 shrink-0 flex-col overflow-y-auto rounded-xl border bg-background/40',
+                    'flex w-72 shrink-0 flex-col overflow-y-auto rounded-xl border bg-background/40',
                     header.border,
                     snapshot.isDraggingOver && 'bg-muted/30'
                   )}

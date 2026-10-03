@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import useListHeight from '@/hooks/useListHeight';
 import { JOB_STATUSES, JOB_STATUS_STYLES } from '@/lib/jobConstants';
 
 function normalizeUrl(url) {
@@ -63,6 +64,7 @@ function exportCsv(rows) {
 }
 
 export default function JobTable({ applications, onCardClick }) {
+  const [listRef, listHeight] = useListHeight();
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [remoteFilter, setRemoteFilter] = useState('all');
@@ -159,7 +161,11 @@ export default function JobTable({ applications, onCardClick }) {
         </Button>
       </div>
 
-      <div className="max-h-[calc(100vh-320px)] overflow-auto rounded-xl border border-border">
+      <div
+        ref={listRef}
+        style={{ maxHeight: listHeight ?? undefined }}
+        className="overflow-auto rounded-xl border border-border"
+      >
         <table className="hidden w-full md:table">
           <thead className="border-b border-border">
             <tr>
@@ -233,7 +239,10 @@ export default function JobTable({ applications, onCardClick }) {
       </div>
 
       {/* Mobile stacked cards */}
-      <div className="max-h-[calc(100vh-320px)] space-y-2 overflow-y-auto md:hidden">
+      <div
+        style={{ maxHeight: listHeight ?? undefined }}
+        className="space-y-2 overflow-y-auto md:hidden"
+      >
         {rows.length === 0 ? (
           <p className="rounded-xl border border-dashed border-border py-10 text-center text-sm text-muted-foreground">
             No applications match your filters.

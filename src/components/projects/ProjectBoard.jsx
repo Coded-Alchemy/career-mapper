@@ -1,17 +1,21 @@
 import { cn } from '@/lib/utils';
+import useListHeight from '@/hooks/useListHeight';
 import { PROJECT_STATUSES, STATUS_STYLES } from '@/lib/projectConstants';
 import ProjectCard from './ProjectCard';
 
 export default function ProjectBoard({ projects, onStatusChange, onCardClick }) {
+  const [listRef, listHeight] = useListHeight();
+
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+    <div ref={listRef} className="grid grid-cols-1 gap-4 md:grid-cols-3">
       {PROJECT_STATUSES.map((status) => {
         const items = projects.filter((p) => p.status === status);
         const style = STATUS_STYLES[status];
         return (
           <div
             key={status}
-            className="flex max-h-[calc(100vh-380px)] min-h-[240px] flex-col rounded-xl border border-border bg-background/40"
+            style={{ height: listHeight ?? undefined }}
+            className="flex flex-col rounded-xl border border-border bg-background/40"
           >
             <div className="flex shrink-0 items-center justify-between px-4 py-3">
               <div className="flex items-center gap-2">
