@@ -50,12 +50,12 @@ export default function JobKanban({ applications, onStatusChange, onCardClick })
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                   className={cn(
-                    'flex w-72 shrink-0 flex-col rounded-xl border bg-background/40',
+                    'flex h-[calc(100vh-280px)] min-h-[300px] w-72 shrink-0 flex-col overflow-y-auto rounded-xl border bg-background/40',
                     header.border,
                     snapshot.isDraggingOver && 'bg-muted/30'
                   )}
                 >
-                  <div className="flex items-center justify-between px-3 py-2.5">
+                  <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/60 bg-card/95 px-3 py-2.5 backdrop-blur">
                     <span className={cn('text-sm font-semibold', header.text)}>
                       {status}
                     </span>
