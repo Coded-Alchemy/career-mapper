@@ -105,7 +105,7 @@ export default function JobTable({ applications, onCardClick }) {
   };
 
   const th = (label, field, className = '') => (
-    <th className={`px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground ${className}`}>
+    <th className={`sticky top-0 z-10 bg-card px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground ${className}`}>
       {field ? (
         <button
           onClick={() => toggleSort(field)}
@@ -159,9 +159,9 @@ export default function JobTable({ applications, onCardClick }) {
         </Button>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-border">
+      <div className="max-h-[calc(100vh-320px)] overflow-auto rounded-xl border border-border">
         <table className="hidden w-full md:table">
-          <thead className="border-b border-border bg-muted/30">
+          <thead className="border-b border-border">
             <tr>
               {th('Company', 'company')}
               {th('Title', 'title')}
@@ -233,7 +233,7 @@ export default function JobTable({ applications, onCardClick }) {
       </div>
 
       {/* Mobile stacked cards */}
-      <div className="space-y-2 md:hidden">
+      <div className="max-h-[calc(100vh-320px)] space-y-2 overflow-y-auto md:hidden">
         {rows.length === 0 ? (
           <p className="rounded-xl border border-dashed border-border py-10 text-center text-sm text-muted-foreground">
             No applications match your filters.
