@@ -22,7 +22,7 @@ export default function StatusTimeline({ status }) {
   };
 
   return (
-    <div className="flex items-center gap-1 overflow-x-auto pb-1">
+    <div className="flex items-center gap-1 overflow-x-auto pb-2.5">
       {JOB_STATUSES.map((s, i) => {
         const st = stateFor(i);
         return (

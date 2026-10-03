@@ -59,7 +59,7 @@ export default function RoadmapResult({ roadmap, onToggleSkill, onAddToGoals }) 
       {rolePath.length > 0 && (
         <div className="rounded-xl border border-border bg-card p-5">
           <h4 className="mb-3 text-sm font-semibold text-foreground">Role Path</h4>
-          <div className="flex items-center gap-2 overflow-x-auto pb-2">
+          <div className="flex items-center gap-2 overflow-x-auto pb-2.5">
             {rolePath.map((step, i) => (
               <div key={i} className="flex items-center gap-2">
                 <div

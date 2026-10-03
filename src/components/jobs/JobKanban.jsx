@@ -42,7 +42,7 @@ export default function JobKanban({ applications, onStatusChange, onCardClick })
       <div
         ref={listRef}
         style={{ maxHeight: listHeight ?? undefined }}
-        className="flex gap-4 overflow-x-auto pb-2"
+        className="flex gap-4 overflow-x-auto pb-2.5"
       >
         {JOB_STATUSES.map((status) => {
           const items = applications.filter((a) => a.status === status);

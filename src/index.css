@@ -92,9 +92,10 @@
 
 /* ============================================================
    Scrollbars — ONE style for every scrolling surface in the app
-   (page, list panels, tables, sidebar, dialogs, menus): a 10px
-   track-less bar with a rounded thumb painted from the theme
-   tokens, so each bar reads as part of the panel it lives in.
+   (page, list panels, tables, sidebar, dialogs, menus), on both
+   axes: a 10px, track-less bar with a rounded thumb painted from
+   the theme tokens, so each bar reads as part of the panel it
+   lives in.
    ============================================================ */
 *::-webkit-scrollbar {
   width: var(--scrollbar-size);
@@ -111,6 +112,24 @@
   background-clip: padding-box;
 }
 *::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--muted-foreground) / .55);
+}
+/* Horizontal bars — the same bar laid along the bottom edge of its panel.
+   Some engines don't carry the plain thumb rule over to the horizontal
+   axis, so the height and thumb are declared for :horizontal too, which
+   keeps both axes from ever drifting apart. Panels that scroll sideways
+   keep at least --scrollbar-size of bottom padding, so the bar gets its
+   own strip instead of sitting over the content. */
+*::-webkit-scrollbar:horizontal {
+  height: var(--scrollbar-size);
+}
+*::-webkit-scrollbar-thumb:horizontal {
+  background-color: hsl(var(--muted-foreground) / .32);
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:horizontal:hover {
   background-color: hsl(var(--muted-foreground) / .55);
 }
 /* Firefox has no ::-webkit-scrollbar, so it gets the standard properties
