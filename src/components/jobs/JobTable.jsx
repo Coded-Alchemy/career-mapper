@@ -27,6 +27,16 @@ function fmtDate(dateStr) {
 
 const SORTABLE = ['company', 'title', 'status', 'date_applied', 'salary_range', 'location', 'follow_up_date'];
 
+// The header row and the scrolling rows live in two tables so the scrollbar
+// only spans the rows — both share these widths so the columns line up.
+const COLGROUP = (
+  <colgroup>
+    {[14, 16, 11, 10, 11, 11, 8, 10, 9].map((w) => (
+      <col key={w} style={{ width: `${w}%` }} />
+    ))}
+  </colgroup>
+);
+
 function sortValue(row, field) {
   if (field === 'date_applied' || field === 'follow_up_date') {
     if (!row[field]) return 0;
@@ -64,7 +74,8 @@ function exportCsv(rows) {
 }
 
 export default function JobTable({ applications, onCardClick }) {
-  const [listRef, listHeight] = useListHeight();
+  const [tableRef, tableHeight] = useListHeight();
+  const [cardsRef, cardsHeight] = useListHeight();
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [remoteFilter, setRemoteFilter] = useState('all');
@@ -107,7 +118,7 @@ export default function JobTable({ applications, onCardClick }) {
   };
 
   const th = (label, field, className = '') => (
-    <th className={`sticky top-0 z-10 bg-card px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground ${className}`}>
+    <th className={`bg-card px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground ${className}`}>
       {field ? (
         <button
           onClick={() => toggleSort(field)}
@@ -161,26 +172,36 @@ export default function JobTable({ applications, onCardClick }) {
         </Button>
       </div>
 
-      <div
-        ref={listRef}
-        style={{ maxHeight: listHeight ?? undefined }}
-        className="overflow-auto rounded-xl border border-border"
-      >
-        <table className="hidden w-full md:table">
-          <thead className="border-b border-border">
-            <tr>
-              {th('Company', 'company')}
-              {th('Title', 'title')}
-              {th('Status', 'status')}
-              {th('Date Applied', 'date_applied')}
-              {th('Salary Range', 'salary_range')}
-              {th('Location', 'location')}
-              {th('Remote', null, 'text-center')}
-              {th('Follow-Up', 'follow_up_date')}
-              {th('Apply', null, 'text-center')}
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border">
+      {/* Desktop table — the header row stays put and only the rows below it
+          scroll, so the scrollbar starts under the header. */}
+      <div className="hidden overflow-hidden rounded-xl border border-border md:flex md:flex-col">
+        <div className="pr-[var(--scrollbar-size)]">
+          <table className="w-full table-fixed">
+            {COLGROUP}
+            <thead className="border-b border-border">
+              <tr>
+                {th('Company', 'company')}
+                {th('Title', 'title')}
+                {th('Status', 'status')}
+                {th('Date Applied', 'date_applied')}
+                {th('Salary Range', 'salary_range')}
+                {th('Location', 'location')}
+                {th('Remote', null, 'text-center')}
+                {th('Follow-Up', 'follow_up_date')}
+                {th('Apply', null, 'text-center')}
+              </tr>
+            </thead>
+          </table>
+        </div>
+
+        <div
+          ref={tableRef}
+          style={{ maxHeight: tableHeight ?? undefined }}
+          className="bp-gutter overflow-y-auto"
+        >
+          <table className="w-full table-fixed">
+            {COLGROUP}
+            <tbody className="divide-y divide-border">
             {rows.length === 0 ? (
               <tr>
                 <td colSpan={9} className="px-3 py-10 text-center text-sm text-muted-foreground">
@@ -234,13 +255,15 @@ export default function JobTable({ applications, onCardClick }) {
                 );
               })
             )}
-          </tbody>
-        </table>
-      </div>
+              </tbody>
+            </table>
+          </div>
+        </div>
 
       {/* Mobile stacked cards */}
       <div
-        style={{ maxHeight: listHeight ?? undefined }}
+        ref={cardsRef}
+        style={{ maxHeight: cardsHeight ?? undefined }}
         className="space-y-2 overflow-y-auto md:hidden"
       >
         {rows.length === 0 ? (

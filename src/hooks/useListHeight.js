@@ -20,6 +20,7 @@ export default function useListHeight(bottomGap = BOTTOM_GAP) {
     if (!el) return;
 
     const measure = () => {
+      if (!el.getClientRects().length) return; // not rendered at this breakpoint
       const scroller = el.closest('main');
       const top = scroller
         ? el.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop

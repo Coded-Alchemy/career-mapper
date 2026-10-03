@@ -29,6 +29,7 @@
     --warning: 37 91% 54.9%;            /* #F5A623 amber */
     --warning-foreground: 220 49% 8.4%;
     --radius: 0.75rem;
+    --scrollbar-size: 10px;
     --font-heading: ui-sans-serif, system-ui, sans-serif;
     --font-body: ui-sans-serif, system-ui, sans-serif;
     --font-display: ui-sans-serif, system-ui, sans-serif;
@@ -99,8 +100,13 @@
   scrollbar-color: hsl(var(--muted-foreground) / .32) transparent;
 }
 *::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
+}
+/* Reserves the scrollbar's space up front, so a scrolling list keeps the same
+   width as the header row sitting above it. */
+.bp-gutter {
+  scrollbar-gutter: stable;
 }
 *::-webkit-scrollbar-track,
 *::-webkit-scrollbar-corner {

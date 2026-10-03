@@ -50,16 +50,13 @@ export default function JobKanban({ applications, onStatusChange, onCardClick })
             <Droppable droppableId={status} key={status}>
               {(provided, snapshot) => (
                 <div
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
                   style={{ height: listHeight ?? undefined }}
                   className={cn(
-                    'flex w-72 shrink-0 flex-col overflow-y-auto rounded-xl border bg-background/40',
-                    header.border,
-                    snapshot.isDraggingOver && 'bg-muted/30'
+                    'flex w-72 shrink-0 flex-col overflow-hidden rounded-xl border bg-background/40',
+                    header.border
                   )}
                 >
-                  <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/60 bg-card/95 px-3 py-2.5 backdrop-blur">
+                  <div className="flex shrink-0 items-center justify-between border-b border-border/60 bg-card/60 px-3 py-2.5">
                     <span className={cn('text-sm font-semibold', header.text)}>
                       {status}
                     </span>
@@ -73,7 +70,14 @@ export default function JobKanban({ applications, onStatusChange, onCardClick })
                     </span>
                   </div>
 
-                  <div className="flex min-h-[80px] flex-1 flex-col gap-2 px-2 pb-2">
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    className={cn(
+                      'flex min-h-[80px] flex-1 flex-col gap-2 overflow-y-auto px-2 pb-2',
+                      snapshot.isDraggingOver && 'bg-muted/30'
+                    )}
+                  >
                     {items.map((app, index) => {
                       const url = normalizeUrl(app.job_url);
                       const days = daysSince(app.date_applied);
